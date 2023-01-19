@@ -8,6 +8,8 @@ const merge = require("webpack-merge").merge;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const FreeTexPackerPlugin = require("webpack-free-tex-packer");
+const readdirSync = require("fs").readdirSync;
 
 module.exports = (env) => {
     const config = {
@@ -38,27 +40,45 @@ module.exports = (env) => {
 
         plugins: [
             new HtmlWebpackPlugin({
-                template: "src/index.html"
+                template: "src/index.html",
             }),
+            new FreeTexPackerPlugin(
+                ["src/assets/textures/cardsDeck"], //getDirectories("src/assets/textures"),
+                "assets/textures",
+                {
+                    textureName: "atlas",
+                    width: 512,
+                    height: 512,
+                    fixedSize: false,
+                    padding: 2,
+                    allowRotation: true,
+                    detectIdentical: true,
+                    allowTrim: true,
+                    exporter: "Pixi",
+                    removeFileExtension: false,
+                    prependFolderName: true,
+                },
+            ),
             new CopyPlugin({
-                patterns: [
-                    {
-                        from: "src/assets/**",
+                patterns: [{ from: "textures/*.*", to: "assets", context: "src/assets/", noErrorOnMissing: true }],
+                // patterns: [
+                //     {
+                //         from: "src/assets/**",
 
-                        // if there are nested subdirectories , keep the hierarchy
-                        to({ context, absoluteFilename }) {
-                            const assetsPath = path.resolve(__dirname, "src/assets");
+                //         // if there are nested subdirectories , keep the hierarchy
+                //         to({ context, absoluteFilename }) {
+                //             const assetsPath = path.resolve(__dirname, "src/assets");
 
-                            if (!absoluteFilename) {
-                                throw Error();
-                            }
+                //             if (!absoluteFilename) {
+                //                 throw Error();
+                //             }
 
-                            const endPath = absoluteFilename.slice(assetsPath.length);
+                //             const endPath = absoluteFilename.slice(assetsPath.length);
 
-                            return Promise.resolve(`assets/${endPath}`);
-                        },
-                    },
-                ],
+                //             return Promise.resolve(`assets/${endPath}`);
+                //         },
+                //     },
+                // ],
             }),
         ],
     };
@@ -68,3 +88,15 @@ module.exports = (env) => {
 
     return mergedConfig;
 };
+
+function getDirectories(source) {
+    return readdirSync(source, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => `${source}/${dirent.name}`);
+}
+
+function getFiles(source) {
+    return readdirSync(source, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => `${source}/${dirent.name}`);
+}

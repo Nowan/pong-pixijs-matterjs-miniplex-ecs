@@ -4,12 +4,18 @@ import App from "./modules/App";
 
 import "./index.css";
 
-if (process.env.NODE_ENV === 'development') {
+declare global {
+    interface Window {
+        __PIXI_INSPECTOR_GLOBAL_HOOK__: any;
+    }
+}
+
+export default function connectPixiDevTools(): void {
     // Register PIXI namespace for pixi-devtools
     window.__PIXI_INSPECTOR_GLOBAL_HOOK__ && window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
 }
 
-window.onload = async event => {
+window.onload = async (event) => {
     const app = new App();
 
     mountGameCanvas(app, document.body);
