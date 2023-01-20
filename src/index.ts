@@ -1,19 +1,8 @@
 import { Loader, Sprite } from "pixi.js";
-import * as PIXI from "pixi.js";
 import App from "./modules/App";
+import connectPixiDevTools from "../devscripts/connectPixiDevTools";
 
 import "./index.css";
-
-declare global {
-    interface Window {
-        __PIXI_INSPECTOR_GLOBAL_HOOK__: any;
-    }
-}
-
-export default function connectPixiDevTools(): void {
-    // Register PIXI namespace for pixi-devtools
-    window.__PIXI_INSPECTOR_GLOBAL_HOOK__ && window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
-}
 
 window.onload = async (event) => {
     const app = new App();
@@ -24,11 +13,11 @@ window.onload = async (event) => {
 
     app.viewport.moveCenter(0, 0);
 
-    const background = Sprite.from("assets/background.jpg");
+    const background = Sprite.from("assets/textures/background.jpg");
     background.anchor.set(0.5);
     app.viewport.addChild(background);
 
-    const card = Sprite.from("assets/cardsDeck/BackFace.png");
+    const card = Sprite.from("cardsDeck/BackFace.png");
     card.anchor.set(0.5);
     card.scale.set(0.5);
     app.viewport.addChild(card);
@@ -58,8 +47,8 @@ async function loadGameAssets(): Promise<void> {
     return new Promise((res, rej) => {
         const loader = Loader.shared;
 
-        loader.add("assets/background.jpg", "assets/background.jpg");
-        loader.add("assents/cardsDeck.atlas.json", "assets/cardsDeck.atlas.json");
+        loader.add("assets/textures/background.jpg", "assets/textures/background.jpg");
+        loader.add("assents/textures/cardsDeck.atlas.json", "assets/textures/cardsDeck.atlas.json");
 
         loader.onComplete.once(() => res());
         loader.onError.once(() => rej());
@@ -67,3 +56,5 @@ async function loadGameAssets(): Promise<void> {
         loader.load();
     });
 }
+
+connectPixiDevTools();
