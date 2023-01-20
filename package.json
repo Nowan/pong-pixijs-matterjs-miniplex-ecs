@@ -31,7 +31,7 @@
         "pixi-spine": "^3.0.16",
         "pixi-viewport": "^4.38.0",
         "pixi.js": "^6.5.8",
-        "regenerator-runtime": "^0.13.10",
+        "regenerator-runtime": "^0.13.11",
         "webpack-free-tex-packer": "^0.3.4"
     },
     "devDependencies": {
