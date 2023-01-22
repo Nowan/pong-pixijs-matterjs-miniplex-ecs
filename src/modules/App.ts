@@ -1,24 +1,20 @@
 import { Application } from "pixi.js";
-import { Viewport } from "pixi-viewport";
-
-const gameWidth = 1024;
-const gameHeight = 768;
+import SceneDirector from "./core/sceneManagement/SceneDirector";
+import MainScene from "./scenes/MainScene";
 
 export default class App extends Application {
-    viewport: Viewport;
+    public director: SceneDirector;
 
     constructor() {
         super({
             backgroundColor: 0x000000,
-            width: gameWidth,
-            height: gameHeight,
+            width: 1024,
+            height: 768,
         });
 
-        this.viewport = this.stage.addChild(new Viewport({
-            screenWidth: gameWidth,
-            screenHeight: gameHeight,
-            worldWidth: gameWidth,
-            worldHeight: gameHeight
-        }));
+        this.director = new SceneDirector(this);
+        this.director.register("Main", MainScene);
+
+        this.director.goTo("Main");
     }
 }
