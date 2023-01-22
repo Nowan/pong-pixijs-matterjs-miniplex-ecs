@@ -11,16 +11,20 @@ class ExtendedFreeTexPackerPlugin extends FreeTexPackerPlugin {
         }));
     }
 
-    emitHookHandler(compilation, callback) {
-        Promise.all(
-            this._configEntries.map((configEntry) => {
-                this.src = configEntry.from;
-                this.dest = configEntry.to;
-                this.options = configEntry.options;
+    async emitHookHandler(compilation, callback) {
+        for (let configEntry of this._configEntries) {
+            this.src = configEntry.from;
+            this.dest = configEntry.to;
+            this.options = configEntry.options;
+            this.watchStarted = false;
 
-                return new Promise((resolve) => super.emitHookHandler(compilation, resolve));
-            }),
-        ).then(() => callback());
+            await new Promise((resolve) => super.emitHookHandler(compilation, resolve));
+        }
+
+        this.changed = false;
+        this.watchStarted = true;
+
+        callback();
     }
 }
 
