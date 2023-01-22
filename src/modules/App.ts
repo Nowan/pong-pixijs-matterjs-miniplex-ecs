@@ -2,7 +2,7 @@ import { Application } from "pixi.js";
 import SceneDirector from "./core/sceneManagement/SceneDirector";
 import MainScene from "./scenes/MainScene";
 
-export default class App extends Application {
+export default class App extends Application<HTMLCanvasElement> {
     public director: SceneDirector;
 
     constructor() {

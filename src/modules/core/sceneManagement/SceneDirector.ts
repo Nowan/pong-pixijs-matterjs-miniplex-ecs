@@ -1,4 +1,5 @@
-import { utils, Container, AbstractRenderer, Application } from "pixi.js";
+import { utils, Container, IRenderer } from "pixi.js";
+import App from "../../App";
 import Scene from "./Scene";
 
 export enum Event {
@@ -10,11 +11,11 @@ type SceneConstructor = typeof Scene;
 
 export default class SceneDirector extends utils.EventEmitter<Event> {
     private _stage: Container;
-    private _renderer: AbstractRenderer;
+    private _renderer: IRenderer;
     private _sceneConstructors: Map<SceneAlias, SceneConstructor>;
     private _activeScene: Scene | null;
 
-    constructor(app: Application) {
+    constructor(app: App) {
         super();
 
         this._stage = app.stage;

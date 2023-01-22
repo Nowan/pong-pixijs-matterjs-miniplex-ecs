@@ -1,4 +1,4 @@
-import { Loader, Sprite } from "pixi.js";
+import { Assets, Sprite } from "pixi.js";
 import { Viewport } from "pixi-viewport";
 import Scene, { PropRefs } from "../core/sceneManagement/Scene";
 
@@ -30,17 +30,8 @@ export default class MainScene extends Scene {
     }
 
     async load(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            const loader = Loader.shared;
-
-            loader.add("assets/textures/background.jpg", "assets/textures/background.jpg");
-            loader.add("assents/textures/cardsDeck.json", "assets/textures/cardsDeck.json");
-
-            loader.onComplete.once(() => resolve());
-            loader.onError.once(() => reject());
-
-            loader.load();
-        });
+        await Assets.load("assets/textures/background.jpg");
+        await Assets.load("assets/textures/cardsDeck.json");
     }
 
     resize(width: number, height: number) {
