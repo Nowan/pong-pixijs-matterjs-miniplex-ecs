@@ -11,13 +11,11 @@ window.onload = async (event) => {
 
     await loadGameAssets();
 
-    app.viewport.moveCenter(0, 0);
-
     const background = Sprite.from("assets/textures/background.jpg");
     background.anchor.set(0.5);
     app.viewport.addChild(background);
 
-    const card = Sprite.from("cardsDeck/BackFace.png");
+    const card = Sprite.from("assets/textures/cardsDeck/BackFace.png");
     card.anchor.set(0.5);
     card.scale.set(0.5);
     app.viewport.addChild(card);
@@ -48,7 +46,7 @@ async function loadGameAssets(): Promise<void> {
         const loader = Loader.shared;
 
         loader.add("assets/textures/background.jpg", "assets/textures/background.jpg");
-        loader.add("assents/textures/cardsDeck.atlas.json", "assets/textures/cardsDeck.atlas.json");
+        loader.add("assents/textures/cardsDeck.json", "assets/textures/cardsDeck.json");
 
         loader.onComplete.once(() => res());
         loader.onError.once(() => rej());

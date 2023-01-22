@@ -19,7 +19,7 @@ const packerEntries = readdirSync(rawTexturesPath, { withFileTypes: true })
         from: rawTexturesPath + dirent.name,
         to: packerOutputPath,
         options: {
-            textureName: `${dirent.name}.atlas`,
+            textureName: `${dirent.name}`,
             fixedSize: false,
             padding: 2,
             allowRotation: true,
@@ -28,6 +28,7 @@ const packerEntries = readdirSync(rawTexturesPath, { withFileTypes: true })
             exporter: "Pixi",
             removeFileExtension: false,
             prependFolderName: true,
+            prependFolderPath: true,
         },
     }));
 
