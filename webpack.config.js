@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const merge = require("webpack-merge").merge;
-const { readdirSync, Dirent } = require("fs");
+const { readdirSync } = require("fs");
 
 // plugins
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const FreeTexPackerPlugin = require("./devscripts/FreeTexPackerPlugin");
+const { WebpackManifestPlugin: ManifestPlugin } = require("webpack-manifest-plugin");
+const generatePixiAssetsManifest = require("./devscripts/generatePixiAssetsManifest");
 
 // Looks up subdirectories under path and creates separate configurations for each one
 // Textures in each one are packed in a separate atlas named after subdirectory
@@ -60,12 +62,18 @@ module.exports = (env) => {
         },
 
         plugins: [
-            new HtmlWebpackPlugin({
+            new HtmlPlugin({
                 template: "src/index.html",
             }),
             new FreeTexPackerPlugin(...packerEntries),
             new CopyPlugin({
                 patterns: [{ from: "textures/*.*", to: "assets", context: "src/assets/", noErrorOnMissing: true }],
+            }),
+            new ManifestPlugin({
+                fileName: "assets/manifest.json",
+                writeToFileEmit: true,
+                generate: generatePixiAssetsManifest,
+                filter: (file) => file.name.includes("assets/textures/"),
             }),
         ],
     };

@@ -1,4 +1,4 @@
-import { Application } from "pixi.js";
+import { Application, Assets } from "pixi.js";
 import SceneDirector from "./core/sceneManagement/SceneDirector";
 import MainScene from "./scenes/MainScene";
 
@@ -11,6 +11,8 @@ export default class App extends Application<HTMLCanvasElement> {
             width: 1024,
             height: 768,
         });
+
+        Assets.init({ manifest: "assets/manifest.json" });
 
         this.director = new SceneDirector(this);
         this.director.register("Main", MainScene);

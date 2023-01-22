@@ -1,5 +1,6 @@
 const FreeTexPackerPlugin = require("webpack-free-tex-packer");
-const { readdirSync } = require("fs");
+const { Compilation } = require("webpack");
+
 class ExtendedFreeTexPackerPlugin extends FreeTexPackerPlugin {
     constructor(...configEntries) {
         super(null, null, {});
@@ -11,7 +12,25 @@ class ExtendedFreeTexPackerPlugin extends FreeTexPackerPlugin {
         }));
     }
 
-    async emitHookHandler(compilation, callback) {
+    apply(compiler) {
+        if (compiler.hooks && compiler.hooks.thisCompilation) {
+            compiler.hooks.thisCompilation.tap("WebpackFreeTexPacker", this.thisCompilationHookHandler.bind(this));
+        } else {
+            super.apply(compiler);
+        }
+    }
+
+    async thisCompilationHookHandler(compilation) {
+        compilation.hooks.processAssets.tapAsync(
+            {
+                name: "WebpackFreeTexPacker",
+                stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+            },
+            (_, callback) => this.processAssetsHookHandler(compilation, callback),
+        );
+    }
+
+    async processAssetsHookHandler(compilation, callback) {
         for (let configEntry of this._configEntries) {
             this.src = configEntry.from;
             this.dest = configEntry.to;
@@ -20,9 +39,7 @@ class ExtendedFreeTexPackerPlugin extends FreeTexPackerPlugin {
 
             await new Promise((resolve) => super.emitHookHandler(compilation, resolve));
 
-            if (configEntry.options.prependFolderPath) {
-                postprocessPrependFolderPath(configEntry, compilation);
-            }
+            postprocessConfigEntry(configEntry, compilation);
         }
 
         this.changed = false;
@@ -32,34 +49,45 @@ class ExtendedFreeTexPackerPlugin extends FreeTexPackerPlugin {
     }
 }
 
-function postprocessPrependFolderPath(configEntry, compilation) {
+function postprocessConfigEntry(configEntry, compilation) {
     const folderPath = configEntry.to.replace(/\/$/, "");
-    const atlasNamePattern = new RegExp(`${configEntry.options.textureName}(?:-\\d+)?\\.json$`);
+    const atlasNamePattern = new RegExp(`${configEntry.options.textureName}(?:-\\d+)?\\..*`);
     const atlasNames = Object.keys(compilation.assets).filter((fileName) => atlasNamePattern.test(fileName));
 
     for (let atlasName of atlasNames) {
-        const rawAsset = compilation.assets[atlasName];
-        const atlasJson = JSON.parse(rawAsset.source().toString("utf-8"));
+        if (configEntry.options.prependFolderPath && atlasName.endsWith(".json")) {
+            compilation.assets[atlasName] = prependFolderPath(compilation.assets[atlasName], folderPath);
+        }
 
-        atlasJson.frames = Object.entries(atlasJson.frames).reduce(
-            (framesJson, [frameName, frameData]) => ({
-                [`${folderPath}/${frameName}`]: frameData,
-                ...framesJson,
-            }),
-            {},
-        );
-
-        const atlasBuffer = Buffer.from(JSON.stringify(atlasJson, null, 2), "utf-8");
-
-        compilation.assets[atlasName] = {
-            source() {
-                return atlasBuffer;
-            },
-            size() {
-                return atlasBuffer.length;
-            },
-        };
+        // const atlasNameWithSuffix = prependExtensionSuffix(".atlas", atlasName);
+        // compilation.assets[atlasNameWithSuffix] = compilation.assets[atlasName];
+        // delete compilation.assets[atlasName];
     }
+}
+
+function prependFolderPath(rawAtlasAsset, folderPath) {
+    const atlasJson = JSON.parse(rawAtlasAsset.source().toString("utf-8"));
+
+    atlasJson.frames = Object.entries(atlasJson.frames).reduce(
+        (framesJson, [frameName, frameData]) => ({
+            [`${folderPath}/${frameName}`]: frameData,
+            ...framesJson,
+        }),
+        {},
+    );
+
+    const atlasBuffer = Buffer.from(JSON.stringify(atlasJson, null, 2), "utf-8");
+
+    return {
+        source: () => atlasBuffer,
+        size: () => atlasBuffer.length,
+    };
+}
+
+function prependExtensionSuffix(extensionSuffix, atlasName) {
+    const extensionCharIndex = atlasName.lastIndexOf(".");
+
+    return [atlasName.slice(0, extensionCharIndex), extensionSuffix, atlasName.slice(extensionCharIndex)].join("");
 }
 
 module.exports = ExtendedFreeTexPackerPlugin;

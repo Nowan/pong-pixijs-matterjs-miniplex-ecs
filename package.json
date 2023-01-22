@@ -29,7 +29,6 @@
     "dependencies": {
         "core-js": "^3.26.0",
         "pixi-spine": "^4.0.3",
-        "pixi-viewport": "^4.38.0",
         "pixi.js": "^7.1.1",
         "regenerator-runtime": "^0.13.10",
         "webpack-free-tex-packer": "^0.3.4"
@@ -69,6 +68,7 @@
         "webpack": "^5.74.0",
         "webpack-cli": "^4.10.0",
         "webpack-dev-server": "^4.11.1",
+        "webpack-manifest-plugin": "^5.0.0",
         "webpack-merge": "^5.8.0"
     },
     "jest": {

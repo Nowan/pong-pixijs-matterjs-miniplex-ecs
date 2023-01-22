@@ -7,17 +7,10 @@
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
         "paths": {
-            "mini-signals": [
-                "./node_modules/resource-loader/typings/mini-signals.d.ts"
-            ]
+            "mini-signals": ["./node_modules/resource-loader/typings/mini-signals.d.ts"]
         },
         "skipLibCheck": false,
-        "lib": [
-            "DOM",
-            "ES2020"
-        ]
+        "lib": ["DOM", "ES2020"]
     },
-    "include": [
-        "./src/index.ts"
-    ]
+    "include": ["./src/index.ts"]
 }
