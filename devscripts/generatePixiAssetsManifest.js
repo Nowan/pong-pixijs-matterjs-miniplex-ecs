@@ -1,5 +1,6 @@
+const sourceManifest = require("../src/assets/manifest.json");
+
 module.exports = function generatePixiAssetsManifest(seed, files, entries) {
-    console.log(files);
     return {
         bundles: [
             {
@@ -9,6 +10,7 @@ module.exports = function generatePixiAssetsManifest(seed, files, entries) {
                     srcs: file.name,
                 })),
             },
+            ...sourceManifest.bundles,
         ],
     };
 };

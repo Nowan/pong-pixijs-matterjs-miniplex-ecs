@@ -1,0 +1,17 @@
+{
+    "bundles": [
+        {
+            "name": "mainScreen",
+            "assets": [
+                {
+                    "name": "assets/textures/background.jpg",
+                    "srcs": "assets/textures/background.jpg"
+                },
+                {
+                    "name": "assets/textures/cardsDeck.json",
+                    "srcs": "assets/textures/cardsDeck.json"
+                }
+            ]
+        }
+    ]
+}

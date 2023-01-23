@@ -18,8 +18,7 @@ export default class MainScene extends Scene {
     }
 
     async load(): Promise<void> {
-        await Assets.load("assets/textures/background.jpg");
-        await Assets.load("assets/textures/cardsDeck.json");
+        await Assets.loadBundle("mainScene");
     }
 
     resize(width: number, height: number) {}
