@@ -1,5 +1,8 @@
 {
     "parser": "@typescript-eslint/parser",
     "plugins": ["@typescript-eslint"],
+    "rules": {
+        "arrow-parens": "as-needed"
+    },
     "extends": ["prettier", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"]
 }

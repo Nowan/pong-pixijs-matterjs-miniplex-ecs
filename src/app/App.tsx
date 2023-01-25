@@ -1,10 +1,9 @@
 import { Stage } from "@pixi/react";
 import MainScene from "./components/scenes/MainScene";
+import { useAssetsManifest } from "./hooks/useAssets";
 
 export default function App() {
-    return (
-        <Stage>
-            <MainScene />
-        </Stage>
-    );
+    const isManifestLoaded = useAssetsManifest("assets/manifest.json");
+
+    return <Stage>{isManifestLoaded && <MainScene />}</Stage>;
 }

@@ -1,9 +1,17 @@
-import { Container } from "@pixi/react";
+import { Container, Sprite } from "@pixi/react";
+import { useAssetsBundle } from "../../hooks/useAssets";
 
 export default function MainScene() {
+    const { assets, progress, errorMessage } = useAssetsBundle("mainScene");
+
     return (
         <>
-            <Container></Container>
+            {assets && (
+                <Container>
+                    <Sprite image="assets/textures/background.jpg" />
+                    <Sprite image="assets/textures/cardsDeck/BackFace.png" />
+                </Container>
+            )}
         </>
     );
 }
