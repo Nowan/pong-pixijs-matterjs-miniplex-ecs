@@ -1,4 +1,4 @@
-import { Assets, ProgressCallback } from "pixi.js";
+import { Assets as AssetsLoader, ProgressCallback } from "pixi.js";
 import { useEffect, useState } from "react";
 
 export type AssetsEffectState = {
@@ -23,7 +23,7 @@ export function useAssetsManifest(manifestPath: string): boolean {
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     useEffect(() => {
-        Assets.init({ manifest: manifestPath }).then(() => setIsLoaded(true));
+        AssetsLoader.init({ manifest: manifestPath }).then(() => setIsLoaded(true));
     }, []);
 
     return isLoaded;
@@ -44,12 +44,12 @@ function useAssetsLoader(assetsLoader: (onProgress: ProgressCallback) => Promise
 }
 
 async function loadAssets(assetsPaths: Array<string>, onProgress?: ProgressCallback): Promise<Assets> {
-    assetsPaths.forEach((assetPath) => Assets.add(assetPath, assetPath));
-    return Assets.load(assetsPaths, onProgress);
+    assetsPaths.forEach((assetPath) => AssetsLoader.add(assetPath, assetPath));
+    return AssetsLoader.load(assetsPaths, onProgress);
 }
 
 async function loadAssetsBundle(assetsBundleIds: string[], onProgress?: ProgressCallback): Promise<Assets> {
-    return flattenBundleAssets(await Assets.loadBundle(assetsBundleIds, onProgress));
+    return flattenBundleAssets(await AssetsLoader.loadBundle(assetsBundleIds, onProgress));
 }
 
 function flattenBundleAssets(bundleIdToAssetsMap: { [bundleId: string]: Assets }): Assets {

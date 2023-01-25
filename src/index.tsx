@@ -1,7 +1,11 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./app/App";
 
-window.onload = async (event) => {
+import connectPixiDevTools from "../devscripts/connectPixiDevTools";
+import "./index.css";
+
+window.onload = (event) => {
     createRoot(document.body).render(<App />);
 };
+
+connectPixiDevTools();
