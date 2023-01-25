@@ -1,13 +1,13 @@
-import { Container, Ticker, IRenderer } from "pixi.js";
+import { Container, Ticker, AbstractRenderer } from "pixi.js";
 import SceneDirector from "./SceneDirector";
 
 export type PropRefs = {
-    renderer: IRenderer;
+    renderer: AbstractRenderer;
     director: SceneDirector;
 };
 
 export default class Scene extends Container {
-    public renderer: IRenderer;
+    public renderer: AbstractRenderer;
     public director: SceneDirector;
     public ticker: Ticker;
 

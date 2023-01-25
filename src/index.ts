@@ -21,7 +21,6 @@ function resize(app: App) {
     const targetHeight = window.innerHeight;
 
     app.renderer.resize(targetWidth, targetHeight);
-    app.director.resize(targetWidth, targetHeight);
 }
 
 connectPixiDevTools();

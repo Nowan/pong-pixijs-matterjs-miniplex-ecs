@@ -1,8 +1,9 @@
-import { Application, Assets } from "pixi.js";
+import { Application } from "pixi.js";
+import { Assets } from "@pixi/assets";
 import SceneDirector from "./core/sceneManagement/SceneDirector";
 import MainScene from "./scenes/MainScene";
 
-export default class App extends Application<HTMLCanvasElement> {
+export default class App extends Application {
     public director: SceneDirector;
 
     constructor() {

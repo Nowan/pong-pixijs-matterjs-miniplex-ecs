@@ -1,9 +1,9 @@
-import { utils, Container, IRenderer } from "pixi.js";
+import { utils, Container, AbstractRenderer } from "pixi.js";
 import App from "../../App";
 import Scene from "./Scene";
 
 export enum Event {
-    SCENE_INITIALIZED = "sceneDirector:sceneInitialized",
+    SCENE_INIT = "sceneDirector:sceneInit",
 }
 
 type SceneAlias = string;
@@ -11,7 +11,7 @@ type SceneConstructor = typeof Scene;
 
 export default class SceneDirector extends utils.EventEmitter<Event> {
     private _stage: Container;
-    private _renderer: IRenderer;
+    private _renderer: AbstractRenderer;
     private _sceneConstructors: Map<SceneAlias, SceneConstructor>;
     private _activeScene: Scene | null;
 
@@ -22,6 +22,8 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
         this._renderer = app.renderer;
         this._sceneConstructors = new Map();
         this._activeScene = null;
+
+        app.renderer.on("resize", this._resizeActiveScene.bind(this));
     }
 
     public register(alias: SceneAlias, Scene: SceneConstructor): void {
@@ -58,12 +60,13 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
 
             this._stage.addChild(scene);
             this._activeScene = scene;
+            this._resizeActiveScene();
         } else {
-            console.error('Scene alias "' + alias + '" is not registered.');
+            console.error(`Scene alias "${alias}" is not registered.`);
         }
     }
 
-    resize(width: number, height: number) {
-        this._activeScene?.resize(width, height);
+    private _resizeActiveScene() {
+        this._activeScene?.resize(this._renderer.width, this._renderer.height);
     }
 }
