@@ -27,6 +27,7 @@
     },
     "author": "Mykyta Dniprovskyi",
     "dependencies": {
+        "@pixi/react": "^7.0.0-alpha.1",
         "core-js": "^3.26.0",
         "pixi-spine": "^4.0.3",
         "pixi.js": "^7.1.1",

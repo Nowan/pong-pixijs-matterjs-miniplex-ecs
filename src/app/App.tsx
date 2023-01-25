@@ -1,5 +1,10 @@
-import React from "react";
+import { Stage } from "@pixi/react";
+import MainScene from "./components/scenes/MainScene";
 
 export default function App() {
-    return <div>Hello, World!</div>;
+    return (
+        <Stage>
+            <MainScene />
+        </Stage>
+    );
 }

@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const FreeTexPackerPlugin = require("./devscripts/FreeTexPackerPlugin");
 const { WebpackManifestPlugin: ManifestPlugin } = require("webpack-manifest-plugin");
+const { ProvidePlugin } = require("webpack");
 const generatePixiAssetsManifest = require("./devscripts/generatePixiAssetsManifest");
 
 // Looks up subdirectories under path and creates separate configurations for each one
@@ -64,6 +65,9 @@ module.exports = (env) => {
         plugins: [
             new HtmlPlugin({
                 template: "src/index.html",
+            }),
+            new ProvidePlugin({
+                React: "react",
             }),
             new FreeTexPackerPlugin(...packerEntries),
             new CopyPlugin({
