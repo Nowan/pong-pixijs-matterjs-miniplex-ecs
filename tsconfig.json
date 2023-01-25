@@ -6,11 +6,12 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
+        "jsx": "react",
         "paths": {
             "mini-signals": ["./node_modules/resource-loader/typings/mini-signals.d.ts"]
         },
         "skipLibCheck": false,
         "lib": ["DOM", "ES2020"]
     },
-    "include": ["./src/index.ts"]
+    "include": ["./src/index.tsx"]
 }

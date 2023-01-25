@@ -36,7 +36,7 @@ const packerEntries = readdirSync(rawTexturesPath, { withFileTypes: true })
 
 module.exports = (env) => {
     const config = {
-        entry: "./src/index.ts",
+        entry: "./src/index.tsx",
 
         resolve: {
             extensions: [".ts", ".tsx", ".js", ".json"],
