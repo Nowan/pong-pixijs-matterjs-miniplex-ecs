@@ -62,28 +62,28 @@ function parseObject(tiledObject: TiledObject): DisplayObject {
 }
 
 function parsePoint(tiledObject: TiledObject): DisplayObject {
-    const point = new Container();
-    point.position.set(tiledObject.x, tiledObject.y);
-    point.name = `Point | ${tiledObject.name}`;
-    return point;
+    return copyProperties(new Container(), tiledObject, "Point");
 }
 
 function parseEllipse(tiledObject: TiledObject): DisplayObject {
-    const ellipse = new Graphics()
-        .beginFill(0xffffff)
-        .drawEllipse(0, 0, tiledObject.width, tiledObject.height)
-        .endFill();
-    ellipse.position.set(tiledObject.x, tiledObject.y);
-    ellipse.name = `Ellipse | ${tiledObject.name}`;
-    return ellipse;
+    return copyProperties(
+        new Graphics().beginFill(0xffffff).drawEllipse(0, 0, tiledObject.width, tiledObject.height).endFill(),
+        tiledObject,
+        "Ellipse",
+    );
 }
 
 function parseRect(tiledObject: TiledObject): DisplayObject {
-    const rectangle = new Graphics()
-        .beginFill(0xffffff)
-        .drawRect(0, 0, tiledObject.width, tiledObject.height)
-        .endFill();
-    rectangle.position.set(tiledObject.x, tiledObject.y);
-    rectangle.name = `Rectangle | ${tiledObject.name}`;
-    return rectangle;
+    return copyProperties(
+        new Graphics().beginFill(0xffffff).drawRect(0, 0, tiledObject.width, tiledObject.height).endFill(),
+        tiledObject,
+        "Rectangle",
+    );
+}
+
+function copyProperties(displayObject: DisplayObject, tiledObject: TiledObject, namePrefix: string) {
+    displayObject.position.set(tiledObject.x, tiledObject.y);
+    displayObject.name = `${namePrefix} | ${tiledObject.name}`;
+    displayObject.visible = tiledObject.visible;
+    return displayObject;
 }

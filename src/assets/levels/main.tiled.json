@@ -16,7 +16,7 @@
                     "rotation": 0,
                     "visible": true,
                     "width": 30,
-                    "x": 0,
+                    "x": 30,
                     "y": 240
                 },
                 {
@@ -27,7 +27,7 @@
                     "rotation": 0,
                     "visible": true,
                     "width": 30,
-                    "x": 960,
+                    "x": 930,
                     "y": 240
                 },
                 {
@@ -39,8 +39,30 @@
                     "rotation": 0,
                     "visible": true,
                     "width": 20,
-                    "x": 490,
-                    "y": 310
+                    "x": 485,
+                    "y": 305
+                },
+                {
+                    "class": "",
+                    "height": 630,
+                    "id": 5,
+                    "name": "OUT_LEFT",
+                    "rotation": 0,
+                    "visible": false,
+                    "width": 30,
+                    "x": 0,
+                    "y": 0
+                },
+                {
+                    "class": "",
+                    "height": 630,
+                    "id": 7,
+                    "name": "OUT_RIGHT",
+                    "rotation": 0,
+                    "visible": false,
+                    "width": 30,
+                    "x": 960,
+                    "y": 0
                 }
             ],
             "opacity": 1,
@@ -51,7 +73,7 @@
         }
     ],
     "nextlayerid": 4,
-    "nextobjectid": 5,
+    "nextobjectid": 8,
     "orientation": "orthogonal",
     "renderorder": "right-down",
     "tiledversion": "1.9.2",
