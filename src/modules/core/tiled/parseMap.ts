@@ -1,9 +1,9 @@
 import { Container, DisplayObject, Rectangle } from "pixi.js";
 import TiledMap, { TiledLayer, TiledObject, TiledLayerTilelayer, TiledLayerObjectgroup } from "tiled-types";
-import TiledContainer from "./TiledContainer";
+import { TiledMapContainer, TiledLayerContainer } from "./TiledMapContainer";
 
-export default function parseMap(tiledMap: TiledMap): TiledContainer {
-    const world = new Container() as TiledContainer;
+export default function parseMap(tiledMap: TiledMap): TiledMapContainer {
+    const world = new Container() as TiledMapContainer;
     const worldWidth = tiledMap.width * tiledMap.tilewidth;
     const worldHeight = tiledMap.height * tiledMap.tileheight;
 
@@ -23,7 +23,7 @@ export default function parseMap(tiledMap: TiledMap): TiledContainer {
     return world;
 }
 
-function parseLayer(tiledLayer: TiledLayer): Container {
+function parseLayer(tiledLayer: TiledLayer): TiledLayerContainer {
     // TODO: add support for more layers and objects
     switch (tiledLayer.type) {
         case "tilelayer":
@@ -35,12 +35,12 @@ function parseLayer(tiledLayer: TiledLayer): Container {
     }
 }
 
-function parseTilesLayer(tiledLayer: TiledLayerTilelayer): Container {
-    return new Container();
+function parseTilesLayer(tiledLayer: TiledLayerTilelayer): TiledLayerContainer {
+    return new Container() as TiledLayerContainer;
 }
 
-function parseObjectsLayer(tiledLayer: TiledLayerObjectgroup): Container {
-    const layer = new Container();
+function parseObjectsLayer(tiledLayer: TiledLayerObjectgroup): TiledLayerContainer {
+    const layer = new Container() as TiledLayerContainer;
     layer.name = `ObjectsLayer | ${tiledLayer.name}`;
 
     for (let tiledObject of tiledLayer.objects) {
@@ -58,7 +58,7 @@ function parseObject(tiledObject: TiledObject): DisplayObject {
     return new Container();
 }
 
-function parsePoint(tiledObject: TiledObject): Container {
+function parsePoint(tiledObject: TiledObject): DisplayObject {
     const point = new Container();
     point.position.set(tiledObject.x, tiledObject.y);
     point.name = `Point | ${tiledObject.name}`;

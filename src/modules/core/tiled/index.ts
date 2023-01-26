@@ -1,2 +1,2 @@
 export * from "./parseMap";
-export * from "./TiledContainer";
+export * from "./TiledMapContainer";
