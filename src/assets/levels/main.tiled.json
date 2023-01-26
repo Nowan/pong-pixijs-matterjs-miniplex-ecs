@@ -1,6 +1,6 @@
 {
     "compressionlevel": -1,
-    "height": 20,
+    "height": 21,
     "infinite": false,
     "layers": [
         {
@@ -9,16 +9,38 @@
             "name": "SETUP",
             "objects": [
                 {
-                    "class": "SpawnPoint",
-                    "height": 0,
-                    "id": 1,
-                    "name": "BALL_SPAWN",
-                    "point": true,
+                    "class": "Racket",
+                    "height": 150,
+                    "id": 2,
+                    "name": "RACKET_LEFT",
                     "rotation": 0,
                     "visible": true,
-                    "width": 0,
-                    "x": 450,
-                    "y": 300
+                    "width": 30,
+                    "x": 0,
+                    "y": 240
+                },
+                {
+                    "class": "Racket",
+                    "height": 150,
+                    "id": 3,
+                    "name": "RACKET_RIGHT",
+                    "rotation": 0,
+                    "visible": true,
+                    "width": 30,
+                    "x": 960,
+                    "y": 240
+                },
+                {
+                    "class": "Ball",
+                    "ellipse": true,
+                    "height": 20,
+                    "id": 4,
+                    "name": "BALL",
+                    "rotation": 0,
+                    "visible": true,
+                    "width": 20,
+                    "x": 490,
+                    "y": 310
                 }
             ],
             "opacity": 1,
@@ -29,7 +51,7 @@
         }
     ],
     "nextlayerid": 4,
-    "nextobjectid": 2,
+    "nextobjectid": 5,
     "orientation": "orthogonal",
     "renderorder": "right-down",
     "tiledversion": "1.9.2",
@@ -38,5 +60,5 @@
     "tilewidth": 30,
     "type": "map",
     "version": "1.9",
-    "width": 30
+    "width": 33
 }

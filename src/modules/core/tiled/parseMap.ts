@@ -1,4 +1,4 @@
-import { Container, DisplayObject, Rectangle } from "pixi.js";
+import { Container, DisplayObject, Graphics, Rectangle } from "pixi.js";
 import TiledMap, { TiledLayer, TiledObject, TiledLayerTilelayer, TiledLayerObjectgroup } from "tiled-types";
 import { TiledMapContainer, TiledLayerContainer } from "./TiledMapContainer";
 
@@ -54,8 +54,11 @@ function parseObject(tiledObject: TiledObject): DisplayObject {
     if (tiledObject.point) {
         return parsePoint(tiledObject);
     }
+    if (tiledObject.ellipse) {
+        return parseEllipse(tiledObject);
+    }
 
-    return new Container();
+    return parseRect(tiledObject);
 }
 
 function parsePoint(tiledObject: TiledObject): DisplayObject {
@@ -63,4 +66,24 @@ function parsePoint(tiledObject: TiledObject): DisplayObject {
     point.position.set(tiledObject.x, tiledObject.y);
     point.name = `Point | ${tiledObject.name}`;
     return point;
+}
+
+function parseEllipse(tiledObject: TiledObject): DisplayObject {
+    const ellipse = new Graphics()
+        .beginFill(0xffffff)
+        .drawEllipse(0, 0, tiledObject.width, tiledObject.height)
+        .endFill();
+    ellipse.position.set(tiledObject.x, tiledObject.y);
+    ellipse.name = `Ellipse | ${tiledObject.name}`;
+    return ellipse;
+}
+
+function parseRect(tiledObject: TiledObject): DisplayObject {
+    const rectangle = new Graphics()
+        .beginFill(0xffffff)
+        .drawRect(0, 0, tiledObject.width, tiledObject.height)
+        .endFill();
+    rectangle.position.set(tiledObject.x, tiledObject.y);
+    rectangle.name = `Rectangle | ${tiledObject.name}`;
+    return rectangle;
 }

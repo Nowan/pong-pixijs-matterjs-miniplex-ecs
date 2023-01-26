@@ -1,4 +1,3 @@
-import { Sprite } from "pixi.js";
 import { Assets } from "@pixi/assets";
 import { Viewport } from "pixi-viewport";
 import Scene, { FacadeRefs } from "../core/sceneManagement/Scene";
@@ -27,26 +26,15 @@ export default class MainScene extends Scene {
 
         this._viewport.resize(undefined, undefined, world.staticBounds.width, world.staticBounds.height);
         this._viewport.addChild(world);
-
-        const background = Sprite.from("assets/textures/background.jpg");
-        background.anchor.set(0.5);
-        world.addChild(background);
-
-        const card = Sprite.from("assets/textures/cardsDeck/BackFace.png");
-        card.anchor.set(0.5);
-        world.addChild(card);
     }
 
     async load(): Promise<void> {
-        // Assets.loadBundle() seem to have spritesheet textures mapping broken, loading single assets instead
         await Assets.load("assets/levels/main.tiled.json");
-        await Assets.load("assets/textures/background.jpg");
-        await Assets.load("assets/textures/cardsDeck.json");
     }
 
     resize(width: number, height: number) {
         this._viewport.resize(width, height);
         this._viewport.fit();
-        this._viewport.moveCenter(0, 0);
+        this._viewport.moveCenter(this._viewport.worldWidth * 0.5, this._viewport.worldHeight * 0.5);
     }
 }
