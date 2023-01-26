@@ -67,7 +67,10 @@ module.exports = (env) => {
             }),
             new FreeTexPackerPlugin(...packerEntries),
             new CopyPlugin({
-                patterns: [{ from: "textures/*.*", to: "assets", context: "src/assets/", noErrorOnMissing: true }],
+                patterns: [
+                    { from: "textures/*.*", to: "assets", context: "src/assets/", noErrorOnMissing: true },
+                    { from: "levels/*.*", to: "assets", context: "src/assets/", noErrorOnMissing: true },
+                ],
             }),
             new ManifestPlugin({
                 fileName: "assets/manifest.json",

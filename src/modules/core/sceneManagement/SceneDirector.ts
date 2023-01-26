@@ -44,6 +44,7 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
 
             scene.load().then(() => {
                 scene.init(...args);
+                this._resizeScene(scene);
 
                 if (scene.update) {
                     let elapsedTimeInS = 0;
@@ -60,13 +61,18 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
 
             this._stage.addChild(scene);
             this._activeScene = scene;
-            this._resizeActiveScene();
         } else {
             console.error(`Scene alias "${alias}" is not registered.`);
         }
     }
 
-    private _resizeActiveScene() {
-        this._activeScene?.resize(this._renderer.width, this._renderer.height);
+    private _resizeActiveScene(): void {
+        if (this._activeScene) {
+            this._resizeScene(this._activeScene);
+        }
+    }
+
+    private _resizeScene(scene: Scene): void {
+        scene.resize(this._renderer.width, this._renderer.height);
     }
 }

@@ -1,7 +1,7 @@
 import { Container, Ticker, AbstractRenderer } from "pixi.js";
 import SceneDirector from "./SceneDirector";
 
-export type PropRefs = {
+export type FacadeRefs = {
     renderer: AbstractRenderer;
     director: SceneDirector;
 };
@@ -11,7 +11,7 @@ export default class Scene extends Container {
     public director: SceneDirector;
     public ticker: Ticker;
 
-    constructor(propRefs: PropRefs) {
+    constructor(propRefs: FacadeRefs) {
         super();
 
         this.renderer = propRefs.renderer;

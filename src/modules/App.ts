@@ -7,11 +7,7 @@ export default class App extends Application {
     public director: SceneDirector;
 
     constructor() {
-        super({
-            backgroundColor: 0x000000,
-            width: 1024,
-            height: 768,
-        });
+        super({ backgroundColor: 0x000000 });
 
         Assets.init({ manifest: "assets/manifest.json" });
 

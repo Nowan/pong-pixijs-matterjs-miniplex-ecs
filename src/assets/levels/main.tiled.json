@@ -1,0 +1,42 @@
+{
+    "compressionlevel": -1,
+    "height": 20,
+    "infinite": false,
+    "layers": [
+        {
+            "draworder": "topdown",
+            "id": 3,
+            "name": "SETUP",
+            "objects": [
+                {
+                    "class": "SpawnPoint",
+                    "height": 0,
+                    "id": 1,
+                    "name": "BALL_SPAWN",
+                    "point": true,
+                    "rotation": 0,
+                    "visible": true,
+                    "width": 0,
+                    "x": 450,
+                    "y": 300
+                }
+            ],
+            "opacity": 1,
+            "type": "objectgroup",
+            "visible": true,
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "nextlayerid": 4,
+    "nextobjectid": 2,
+    "orientation": "orthogonal",
+    "renderorder": "right-down",
+    "tiledversion": "1.9.2",
+    "tileheight": 30,
+    "tilesets": [],
+    "tilewidth": 30,
+    "type": "map",
+    "version": "1.9",
+    "width": 30
+}
