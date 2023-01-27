@@ -7,22 +7,18 @@ import initEntities from "./initEntities";
 type Engines = { physics: PhysicsEngine; ecs: EcsEngine<Entity> };
 
 export default class Game {
-    private _level: LevelContainer;
     private _engines: Engines;
     private _systems: Array<System>;
 
-    constructor(level: LevelContainer) {
-        this._level = level;
+    constructor() {
         this._engines = { physics: createPhysicsEngine(), ecs: createEcsEngine() };
         this._systems = createSystems(this._engines);
-
-        this.init();
     }
 
-    public init() {
+    public init(level: LevelContainer) {
         this._systems.forEach((system) => system.init?.());
 
-        initEntities(this._level, this._engines.ecs);
+        initEntities(level, this._engines.ecs);
         Runner.run(this._engines.physics);
     }
 

@@ -32,7 +32,7 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
         const Scene = this._sceneConstructors.get(alias);
 
         if (Scene) {
-            const scene = new Scene({ director: this, renderer: this._app.renderer, physics: this._app.physics });
+            const scene = new Scene({ director: this, renderer: this._app.renderer });
 
             if (this._activeScene) {
                 this._activeScene.ticker.stop();

@@ -5,6 +5,8 @@ import TiledMap from "tiled-types";
 import parseLevel from "../game/parseLevel";
 import Game from "../game/Game";
 
+const LEVEL_DATA_PATH = "assets/levels/main.tiled.json";
+
 export default class GameScene extends Scene {
     private _game: Game | null;
     private _viewport: Viewport;
@@ -24,18 +26,18 @@ export default class GameScene extends Scene {
     }
 
     public async load(): Promise<void> {
-        await Assets.load("assets/levels/main.tiled.json");
+        await Assets.load(LEVEL_DATA_PATH);
     }
 
     public init(): void {
-        const levelData = Assets.cache.get("assets/levels/main.tiled.json") as TiledMap;
+        const levelData = Assets.cache.get(LEVEL_DATA_PATH) as TiledMap;
         const level = parseLevel(levelData);
-        const game = new Game(level);
 
         this._viewport.resize(undefined, undefined, level.staticBounds.width, level.staticBounds.height);
         this._viewport.addChild(level);
 
-        this._game = game;
+        this._game = new Game();
+        this._game.init(level);
     }
 
     public resize(width: number, height: number): void {
