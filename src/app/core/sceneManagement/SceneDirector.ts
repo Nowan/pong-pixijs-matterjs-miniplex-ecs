@@ -10,16 +10,14 @@ type SceneAlias = string;
 type SceneConstructor = typeof Scene;
 
 export default class SceneDirector extends utils.EventEmitter<Event> {
-    private _stage: Container;
-    private _renderer: AbstractRenderer;
+    private _app: App;
     private _sceneConstructors: Map<SceneAlias, SceneConstructor>;
     private _activeScene: Scene | null;
 
     constructor(app: App) {
         super();
 
-        this._stage = app.stage;
-        this._renderer = app.renderer;
+        this._app = app;
         this._sceneConstructors = new Map();
         this._activeScene = null;
 
@@ -34,12 +32,12 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
         const Scene = this._sceneConstructors.get(alias);
 
         if (Scene) {
-            const scene = new Scene({ director: this, renderer: this._renderer });
+            const scene = new Scene({ director: this, renderer: this._app.renderer, physics: this._app.physics });
 
             if (this._activeScene) {
                 this._activeScene.ticker.stop();
                 this._activeScene.destroy();
-                this._stage.removeChild(this._activeScene);
+                this._app.stage.removeChild(this._activeScene);
             }
 
             scene.load().then(() => {
@@ -59,7 +57,7 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
                 }
             });
 
-            this._stage.addChild(scene);
+            this._app.stage.addChild(scene);
             this._activeScene = scene;
         } else {
             console.error(`Scene alias "${alias}" is not registered.`);
@@ -73,6 +71,6 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
     }
 
     private _resizeScene(scene: Scene): void {
-        scene.resize(this._renderer.width, this._renderer.height);
+        scene.resize(this._app.renderer.width, this._app.renderer.height);
     }
 }

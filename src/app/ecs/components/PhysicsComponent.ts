@@ -1,7 +1,7 @@
+import { Body } from "matter-js";
+
 export interface PhysicsComponent {
-    physics: {
-        velocity: { x: number; y: number };
-    };
+    physics: Body;
 }
 
 export default PhysicsComponent;

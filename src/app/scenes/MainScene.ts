@@ -1,14 +1,17 @@
 import { Assets } from "@pixi/assets";
 import { Viewport } from "pixi-viewport";
-import { World } from "miniplex";
-import { Entity, System, KeyMoveSystem, MoveKey, MoveDirection } from "../ecs";
+import { World as Miniplex } from "miniplex";
+import { Engine, Runner } from "matter-js";
+import { Entity, System, KeyMoveSystem, PhysicsSystem } from "../ecs";
 import Scene, { FacadeRefs } from "../core/sceneManagement/Scene";
 import TiledMap from "tiled-types";
-import parseTiledMap from "../core/tiled/parseMap";
+import parseLevel from "../core/parseLevel";
+import initEntities from "../core/initEntities";
 
 export default class MainScene extends Scene {
     private _viewport: Viewport;
-    private _world: World<Entity>;
+    private _physics: Engine;
+    private _miniplex: Miniplex<Entity>;
     private _systems: Array<System>;
 
     constructor(refs: FacadeRefs) {
@@ -23,57 +26,37 @@ export default class MainScene extends Scene {
             }),
         );
 
-        this._world = new World();
-        this._systems = [];
+        this._physics = Engine.create();
+        this._miniplex = new Miniplex();
+        this._systems = [new PhysicsSystem(this._miniplex, this._physics), new KeyMoveSystem(this._miniplex)];
     }
 
-    init() {
+    public async load(): Promise<void> {
+        await Assets.load("assets/levels/main.tiled.json");
+    }
+
+    public init(): void {
         const levelData = Assets.cache.get("assets/levels/main.tiled.json") as TiledMap;
-        const level = parseTiledMap(levelData);
-        const racketLeft = level.layers[0].children.find((child) => child.name === "RACKET_LEFT");
-        const racketRight = level.layers[0].children.find((child) => child.name === "RACKET_RIGHT");
-        const ball = level.layers[0].children.find((child) => child.name === "BALL");
+        const level = parseLevel(levelData);
 
         this._viewport.resize(undefined, undefined, level.staticBounds.width, level.staticBounds.height);
         this._viewport.addChild(level);
 
-        if (racketLeft) {
-            const playerEntity = this._world.createEntity({ id: "PlayerLeft", pixi: racketLeft });
-            this._world.addComponent(playerEntity, "physics", { velocity: { x: 0, y: 0 } });
-            this._world.addComponent(playerEntity, "moveOnKeys", {
-                [MoveKey.W]: MoveDirection.UP,
-                [MoveKey.S]: MoveDirection.DOWN,
-            });
-        }
+        this._physics.gravity.y = 0;
 
-        if (racketRight) {
-            const playerEntity = this._world.createEntity({ id: "PlayerRight", pixi: racketRight });
-            this._world.addComponent(playerEntity, "physics", { velocity: { x: 0, y: 0 } });
-            this._world.addComponent(playerEntity, "moveOnKeys", {
-                [MoveKey.ARROW_UP]: MoveDirection.UP,
-                [MoveKey.ARROW_DOWN]: MoveDirection.DOWN,
-            });
-        }
+        this._systems.forEach((system) => system.init?.());
 
-        this._systems.push(...initSystems(new KeyMoveSystem(this._world)));
+        initEntities(level, this._miniplex);
+        Runner.run(this._physics);
     }
 
-    async load(): Promise<void> {
-        await Assets.load("assets/levels/main.tiled.json");
-    }
-
-    resize(width: number, height: number): void {
+    public resize(width: number, height: number): void {
         this._viewport.resize(width, height);
         this._viewport.fit();
         this._viewport.moveCenter(this._viewport.worldWidth * 0.5, this._viewport.worldHeight * 0.5);
     }
 
-    update(timeSinceLastFrameInS: number, timeSinceSceneInitiatedInS: number): void {
+    public update(timeSinceLastFrameInS: number, timeSinceSceneInitiatedInS: number): void {
         this._systems.forEach((system) => system.update?.(timeSinceLastFrameInS));
     }
-}
-
-function initSystems(...systems: Array<System>) {
-    systems.forEach((system) => system.init?.());
-    return systems;
 }

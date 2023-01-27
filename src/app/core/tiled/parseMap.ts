@@ -8,7 +8,7 @@ export default function parseMap(tiledMap: TiledMap): TiledMapContainer {
     const worldHeight = tiledMap.height * tiledMap.tileheight;
 
     world.name = "World";
-    world.map = tiledMap;
+    world.tiled = tiledMap;
     world.staticBounds = new Rectangle(0, 0, worldWidth, worldHeight);
     world.layers = [];
     world.layerNameToContainerMap = new Map();
@@ -61,25 +61,25 @@ function parseObject(tiledObject: TiledObject): DisplayObject {
     return parseRect(tiledObject);
 }
 
-function parsePoint(tiledObject: TiledObject): DisplayObject {
+function parsePoint(tiledObject: TiledObject): Container {
     return copyProperties(new Container(), tiledObject);
 }
 
-function parseEllipse(tiledObject: TiledObject): DisplayObject {
+function parseEllipse(tiledObject: TiledObject): Graphics {
     return copyProperties(
         new Graphics().beginFill(0xffffff).drawEllipse(0, 0, tiledObject.width, tiledObject.height).endFill(),
         tiledObject,
     );
 }
 
-function parseRect(tiledObject: TiledObject): DisplayObject {
+function parseRect(tiledObject: TiledObject): Graphics {
     return copyProperties(
         new Graphics().beginFill(0xffffff).drawRect(0, 0, tiledObject.width, tiledObject.height).endFill(),
         tiledObject,
     );
 }
 
-function copyProperties(displayObject: DisplayObject, tiledObject: TiledObject) {
+function copyProperties<T extends DisplayObject>(displayObject: T, tiledObject: TiledObject): T {
     displayObject.position.set(tiledObject.x, tiledObject.y);
     displayObject.name = tiledObject.name;
     displayObject.visible = tiledObject.visible;

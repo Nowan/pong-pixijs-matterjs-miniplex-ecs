@@ -1,14 +1,16 @@
-import { World } from "miniplex";
-import Entity from "../../../modules/Entity";
+import { World as Miniplex } from "miniplex";
+import Entity from "../entities";
 
-export default class System {
-    public world: World<Entity>;
+export class System {
+    public miniplex: Miniplex<Entity>;
 
-    constructor(world: World<Entity>) {
-        this.world = world;
+    constructor(miniplex: Miniplex<Entity>) {
+        this.miniplex = miniplex;
     }
 
     public init?(): void {}
 
     public update?(timeSinceLastFrameInS: number): void {}
 }
+
+export default System;

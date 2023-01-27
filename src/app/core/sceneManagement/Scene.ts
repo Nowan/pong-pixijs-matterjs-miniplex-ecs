@@ -11,11 +11,11 @@ export default class Scene extends Container {
     public director: SceneDirector;
     public ticker: Ticker;
 
-    constructor(propRefs: FacadeRefs) {
+    constructor(facadeRefs: FacadeRefs) {
         super();
 
-        this.renderer = propRefs.renderer;
-        this.director = propRefs.director;
+        this.renderer = facadeRefs.renderer;
+        this.director = facadeRefs.director;
         this.ticker = new Ticker();
     }
 

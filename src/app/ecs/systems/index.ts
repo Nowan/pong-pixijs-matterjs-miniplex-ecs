@@ -1,2 +1,3 @@
-export { default as System } from "./System";
-export { default as KeyMoveSystem } from "./KeyMoveSystem";
+export * from "./System";
+export * from "./KeyMoveSystem";
+export * from "./PhysicsSystem";
