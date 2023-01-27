@@ -33,7 +33,7 @@
         "miniplex": "^1.0.0",
         "pixi-spine": "^3.0.1",
         "pixi-viewport": "^4.38.0",
-        "pixi.js": "^6.5.9",
+        "pixi.js": "^7.1.1",
         "regenerator-runtime": "^0.13.10",
         "webpack-free-tex-packer": "^0.3.4"
     },
