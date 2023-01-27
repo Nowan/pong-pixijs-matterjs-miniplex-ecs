@@ -1,22 +1,18 @@
 import { Assets } from "@pixi/assets";
 import { Viewport } from "pixi-viewport";
-import { World as Miniplex } from "miniplex";
-import { Engine, Runner } from "matter-js";
-import { Entity, System, KeyMoveSystem, PhysicsSystem } from "../ecs";
 import Scene, { FacadeRefs } from "../core/sceneManagement/Scene";
 import TiledMap from "tiled-types";
-import parseLevel from "../core/parseLevel";
-import initEntities from "../core/initEntities";
+import parseLevel from "../game/parseLevel";
+import Game from "../game/Game";
 
-export default class MainScene extends Scene {
+export default class GameScene extends Scene {
+    private _game: Game | null;
     private _viewport: Viewport;
-    private _physics: Engine;
-    private _miniplex: Miniplex<Entity>;
-    private _systems: Array<System>;
 
     constructor(refs: FacadeRefs) {
         super(refs);
 
+        this._game = null;
         this._viewport = this.addChild(
             new Viewport({
                 screenWidth: this.renderer.width,
@@ -25,10 +21,6 @@ export default class MainScene extends Scene {
                 worldHeight: 768,
             }),
         );
-
-        this._physics = Engine.create();
-        this._miniplex = new Miniplex();
-        this._systems = [new PhysicsSystem(this._miniplex, this._physics), new KeyMoveSystem(this._miniplex)];
     }
 
     public async load(): Promise<void> {
@@ -38,16 +30,12 @@ export default class MainScene extends Scene {
     public init(): void {
         const levelData = Assets.cache.get("assets/levels/main.tiled.json") as TiledMap;
         const level = parseLevel(levelData);
+        const game = new Game(level);
 
         this._viewport.resize(undefined, undefined, level.staticBounds.width, level.staticBounds.height);
         this._viewport.addChild(level);
 
-        this._physics.gravity.y = 0;
-
-        this._systems.forEach((system) => system.init?.());
-
-        initEntities(level, this._miniplex);
-        Runner.run(this._physics);
+        this._game = game;
     }
 
     public resize(width: number, height: number): void {
@@ -56,7 +44,7 @@ export default class MainScene extends Scene {
         this._viewport.moveCenter(this._viewport.worldWidth * 0.5, this._viewport.worldHeight * 0.5);
     }
 
-    public update(timeSinceLastFrameInS: number, timeSinceSceneInitiatedInS: number): void {
-        this._systems.forEach((system) => system.update?.(timeSinceLastFrameInS));
+    public update(timeSinceLastFrameInS: number): void {
+        this._game?.update(timeSinceLastFrameInS);
     }
 }

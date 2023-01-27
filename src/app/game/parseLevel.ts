@@ -1,8 +1,8 @@
 import { Graphics } from "pixi.js";
 import { TiledMap } from "tiled-types";
-import { TiledMapContainer } from "./tiled";
-import parseTiledMap from "./tiled/parseMap";
-import { selectObjectWithName } from "./tiled/selectors";
+import { TiledMapContainer } from "../core/tiled";
+import parseTiledMap from "../core/tiled/parseMap";
+import { selectObjectWithName } from "../core/tiled/selectors";
 
 export type LevelContainer = TiledMapContainer & {
     ball: Graphics;
