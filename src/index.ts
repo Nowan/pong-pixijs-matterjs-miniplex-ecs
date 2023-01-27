@@ -1,4 +1,4 @@
-import App from "./modules/App";
+import App from "./app/App";
 import connectPixiDevTools from "../devscripts/connectPixiDevTools";
 
 import "./index.css";

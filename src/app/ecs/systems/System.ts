@@ -1,5 +1,5 @@
 import { World } from "miniplex";
-import Entity from "../Entity";
+import Entity from "../../../modules/Entity";
 
 export default class System {
     public world: World<Entity>;

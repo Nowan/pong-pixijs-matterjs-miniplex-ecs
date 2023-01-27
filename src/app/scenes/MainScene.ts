@@ -1,9 +1,7 @@
 import { Assets } from "@pixi/assets";
 import { Viewport } from "pixi-viewport";
 import { World } from "miniplex";
-import { System, KeyMoveSystem } from "../systems";
-import { MoveKey, MoveDirection } from "../components";
-import Entity from "../Entity";
+import { Entity, System, KeyMoveSystem, MoveKey, MoveDirection } from "../ecs";
 import Scene, { FacadeRefs } from "../core/sceneManagement/Scene";
 import TiledMap from "tiled-types";
 import parseTiledMap from "../core/tiled/parseMap";
@@ -76,8 +74,6 @@ export default class MainScene extends Scene {
 }
 
 function initSystems(...systems: Array<System>) {
-    for (let system of systems) {
-        system.init?.();
-    }
+    systems.forEach((system) => system.init?.());
     return systems;
 }
