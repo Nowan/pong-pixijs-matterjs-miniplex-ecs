@@ -29,6 +29,8 @@
     "dependencies": {
         "@pixi/assets": "^6.5.9",
         "core-js": "^3.26.0",
+        "keypress.js": "^2.1.5",
+        "miniplex": "^1.0.0",
         "pixi-spine": "^3.0.1",
         "pixi-viewport": "^4.38.0",
         "pixi.js": "^6.5.9",
@@ -38,6 +40,7 @@
     "devDependencies": {
         "@swc/core": "^1.3.11",
         "@types/jest": "^29.2.0",
+        "@types/keypress.js": "^2.1.1",
         "@types/node": "^18.11.7",
         "@types/offscreencanvas": "^2019.7.0",
         "@typescript-eslint/eslint-plugin": "^5.41.0",

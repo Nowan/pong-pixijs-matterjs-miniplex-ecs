@@ -15,6 +15,7 @@ export default function parseMap(tiledMap: TiledMap): TiledMapContainer {
 
     for (let tiledLayer of tiledMap.layers) {
         const layer = world.addChild(parseLayer(tiledLayer));
+        layer.name = tiledLayer.name;
 
         world.layers.push(layer);
         world.layerNameToContainerMap.set(tiledLayer.name, layer);
@@ -41,7 +42,6 @@ function parseTilesLayer(tiledLayer: TiledLayerTilelayer): TiledLayerContainer {
 
 function parseObjectsLayer(tiledLayer: TiledLayerObjectgroup): TiledLayerContainer {
     const layer = new Container() as TiledLayerContainer;
-    layer.name = `ObjectsLayer | ${tiledLayer.name}`;
 
     for (let tiledObject of tiledLayer.objects) {
         layer.addChild(parseObject(tiledObject));
@@ -62,14 +62,13 @@ function parseObject(tiledObject: TiledObject): DisplayObject {
 }
 
 function parsePoint(tiledObject: TiledObject): DisplayObject {
-    return copyProperties(new Container(), tiledObject, "Point");
+    return copyProperties(new Container(), tiledObject);
 }
 
 function parseEllipse(tiledObject: TiledObject): DisplayObject {
     return copyProperties(
         new Graphics().beginFill(0xffffff).drawEllipse(0, 0, tiledObject.width, tiledObject.height).endFill(),
         tiledObject,
-        "Ellipse",
     );
 }
 
@@ -77,13 +76,12 @@ function parseRect(tiledObject: TiledObject): DisplayObject {
     return copyProperties(
         new Graphics().beginFill(0xffffff).drawRect(0, 0, tiledObject.width, tiledObject.height).endFill(),
         tiledObject,
-        "Rectangle",
     );
 }
 
-function copyProperties(displayObject: DisplayObject, tiledObject: TiledObject, namePrefix: string) {
+function copyProperties(displayObject: DisplayObject, tiledObject: TiledObject) {
     displayObject.position.set(tiledObject.x, tiledObject.y);
-    displayObject.name = `${namePrefix} | ${tiledObject.name}`;
+    displayObject.name = tiledObject.name;
     displayObject.visible = tiledObject.visible;
     return displayObject;
 }

@@ -29,5 +29,5 @@ export default class Scene extends Container {
 
     public resize(width: number, height: number): void {}
 
-    public update?(timeSinceLastFrame: number, timeSinceSceneInitiated: number) {}
+    public update?(timeSinceLastFrameInS: number, timeSinceSceneInitiatedInS: number) {}
 }
