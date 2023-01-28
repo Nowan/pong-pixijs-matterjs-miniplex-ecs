@@ -63,6 +63,27 @@
                     "width": 30,
                     "x": 960,
                     "y": 0
+                },
+                {
+                    "class": "ServeLine",
+                    "height": 0,
+                    "id": 9,
+                    "name": "SERVE_LINE",
+                    "polyline": [
+                        {
+                            "x": 0,
+                            "y": 0
+                        },
+                        {
+                            "x": 0,
+                            "y": 630
+                        }
+                    ],
+                    "rotation": 0,
+                    "visible": true,
+                    "width": 0,
+                    "x": 495,
+                    "y": 0
                 }
             ],
             "opacity": 1,
@@ -73,7 +94,7 @@
         }
     ],
     "nextlayerid": 4,
-    "nextobjectid": 8,
+    "nextobjectid": 10,
     "orientation": "orthogonal",
     "renderorder": "right-down",
     "tiledversion": "1.9.2",

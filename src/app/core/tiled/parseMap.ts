@@ -1,6 +1,7 @@
 import { Container, DisplayObject, Graphics, Rectangle } from "pixi.js";
-import TiledMap, { TiledLayer, TiledObject, TiledLayerTilelayer, TiledLayerObjectgroup } from "tiled-types";
+import TiledMap, { TiledLayer, TiledObject, TiledLayerTilelayer, TiledLayerObjectgroup, Point } from "tiled-types";
 import { TiledMapContainer, TiledLayerContainer } from "./TiledMapContainer";
+import { PartiallyRequired, isPartiallyRequired } from "../utils/utilityTypes";
 
 export default function parseMap(tiledMap: TiledMap): TiledMapContainer {
     const world = new Container() as TiledMapContainer;
@@ -51,25 +52,54 @@ function parseObjectsLayer(tiledLayer: TiledLayerObjectgroup): TiledLayerContain
 }
 
 function parseObject(tiledObject: TiledObject): DisplayObject {
-    if (tiledObject.point) {
+    if (isPartiallyRequired(tiledObject, "point")) {
         return parsePoint(tiledObject);
     }
-    if (tiledObject.ellipse) {
+    if (isPartiallyRequired(tiledObject, "ellipse")) {
         return parseEllipse(tiledObject);
+    }
+    if (isPartiallyRequired(tiledObject, "polygon")) {
+        return parsePolygon(tiledObject);
+    }
+    if (isPartiallyRequired(tiledObject, "polyline")) {
+        return parsePolyline(tiledObject);
     }
 
     return parseRect(tiledObject);
 }
 
-function parsePoint(tiledObject: TiledObject): Container {
+function parsePoint(tiledObject: PartiallyRequired<TiledObject, "point">): Container {
     return copyProperties(new Container(), tiledObject);
 }
 
-function parseEllipse(tiledObject: TiledObject): Graphics {
+function parseEllipse(tiledObject: PartiallyRequired<TiledObject, "ellipse">): Graphics {
     return copyProperties(
-        new Graphics().beginFill(0xffffff).drawEllipse(0, 0, tiledObject.width, tiledObject.height).endFill(),
+        new Graphics()
+            .beginFill(0xffffff)
+            .drawEllipse(tiledObject.width * 0.5, tiledObject.height * 0.5, tiledObject.width, tiledObject.height)
+            .endFill(),
         tiledObject,
     );
+}
+
+function parsePolygon(tiledObject: PartiallyRequired<TiledObject, "polygon">): Graphics {
+    return copyProperties(
+        new Graphics()
+            .beginFill(0xffffff)
+            .drawPolygon(...tiledObject.polygon)
+            .endFill(),
+        tiledObject,
+    );
+}
+
+function parsePolyline(tiledObject: PartiallyRequired<TiledObject, "polyline">): Graphics {
+    const polyline = new Graphics().lineStyle(3, 0xffffff);
+
+    tiledObject.polyline.forEach((point, i) =>
+        i === 0 ? polyline.moveTo(point.x, point.y) : polyline.lineTo(point.x, point.y),
+    );
+
+    return copyProperties(polyline, tiledObject);
 }
 
 function parseRect(tiledObject: TiledObject): Graphics {
