@@ -1,6 +1,6 @@
 import { Engine as PhysicsEngine, Runner } from "matter-js";
 import { World as EcsEngine } from "miniplex";
-import { Entity, System, PhysicsSystem, KeyMoveSystem, GameLoopSystem } from "../ecs";
+import { Entity, System, PhysicsSystem, KeyMoveSystem, BallSpawnSystem } from "../ecs";
 import { LevelContainer } from "./parseLevel";
 import initEntities from "./initEntities";
 
@@ -38,5 +38,5 @@ function createEcsEngine(): EcsEngine<Entity> {
 }
 
 function createSystems(level: LevelContainer, { ecs, physics }: Engines): Array<System> {
-    return [new PhysicsSystem(ecs, physics), new KeyMoveSystem(ecs), new GameLoopSystem(ecs, physics, level)];
+    return [new PhysicsSystem(ecs, physics), new KeyMoveSystem(ecs), new BallSpawnSystem(ecs, level)];
 }
