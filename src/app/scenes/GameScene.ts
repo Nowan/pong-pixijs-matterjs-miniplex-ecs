@@ -36,8 +36,8 @@ export default class GameScene extends Scene {
         this._viewport.resize(undefined, undefined, level.staticBounds.width, level.staticBounds.height);
         this._viewport.addChild(level);
 
-        this._game = new Game();
-        this._game.init(level);
+        this._game = new Game(level);
+        this._game.init();
     }
 
     public resize(width: number, height: number): void {

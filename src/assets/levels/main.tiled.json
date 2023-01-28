@@ -35,18 +35,18 @@
                     "ellipse": true,
                     "height": 20,
                     "id": 4,
-                    "name": "BALL",
+                    "name": "BALL_PROTOTYPE",
                     "rotation": 0,
-                    "visible": true,
+                    "visible": false,
                     "width": 20,
                     "x": 485,
                     "y": 305
                 },
                 {
-                    "class": "",
+                    "class": "Sensor",
                     "height": 630,
                     "id": 5,
-                    "name": "OUT_LEFT",
+                    "name": "SENSOR_LEFT",
                     "rotation": 0,
                     "visible": false,
                     "width": 30,
@@ -54,10 +54,10 @@
                     "y": 0
                 },
                 {
-                    "class": "",
+                    "class": "Sensor",
                     "height": 630,
                     "id": 7,
-                    "name": "OUT_RIGHT",
+                    "name": "SENSOR_RIGHT",
                     "rotation": 0,
                     "visible": false,
                     "width": 30,
@@ -76,14 +76,14 @@
                         },
                         {
                             "x": 0,
-                            "y": 630
+                            "y": 450
                         }
                     ],
                     "rotation": 0,
                     "visible": true,
                     "width": 0,
                     "x": 495,
-                    "y": 0
+                    "y": 90
                 }
             ],
             "opacity": 1,

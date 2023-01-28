@@ -1,22 +1,24 @@
 import System from "./System";
 import Entity from "../entities";
-import { World as Miniplex, Archetype } from "miniplex";
-import { Engine, World } from "matter-js";
+import { World as EcsEngine, Archetype } from "miniplex";
+import { Engine as PhysicsEngine, World } from "matter-js";
 
 export class PhysicsSystem extends System {
-    private _engine: Engine;
+    private _physics: PhysicsEngine;
     private _archetype: Archetype<Entity>;
 
-    constructor(miniplex: Miniplex<Entity>, engine: Engine) {
-        super(miniplex);
+    constructor(ecs: EcsEngine<Entity>, physics: PhysicsEngine) {
+        super(ecs);
 
-        this._engine = engine;
-        this._archetype = miniplex.archetype("physics", "pixi") as Archetype<Entity>;
+        this._physics = physics;
+        this._archetype = ecs.archetype("physics", "pixi") as Archetype<Entity>;
     }
 
     init() {
+        this._physics.gravity.y = 0;
+
         this._archetype.onEntityAdded.add((entity) => {
-            World.addBody(this._engine.world, entity.physics);
+            World.addBody(this._physics.world, entity.physics);
         });
     }
 

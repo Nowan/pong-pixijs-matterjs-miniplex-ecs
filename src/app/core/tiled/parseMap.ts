@@ -74,10 +74,7 @@ function parsePoint(tiledObject: PartiallyRequired<TiledObject, "point">): Conta
 
 function parseEllipse(tiledObject: PartiallyRequired<TiledObject, "ellipse">): Graphics {
     return copyProperties(
-        new Graphics()
-            .beginFill(0xffffff)
-            .drawEllipse(tiledObject.width * 0.5, tiledObject.height * 0.5, tiledObject.width, tiledObject.height)
-            .endFill(),
+        new Graphics().beginFill(0xffffff).drawEllipse(0, 0, tiledObject.width, tiledObject.height).endFill(),
         tiledObject,
     );
 }

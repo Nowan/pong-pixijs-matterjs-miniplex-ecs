@@ -1,17 +1,17 @@
+import System from "./System";
+import Entity from "../entities";
 import { Listener as KeypressListener } from "keypress.js";
 import { Body } from "matter-js";
-import { Archetype, World as Miniplex } from "miniplex";
-import Entity from "../entities";
-import System from "./System";
+import { World as EcsEngine, Archetype } from "miniplex";
 
 export class KeyMoveSystem extends System {
     private _archetype: Archetype<Entity>;
     private _listener: KeypressListener;
 
-    constructor(miniplex: Miniplex<Entity>) {
-        super(miniplex);
+    constructor(ecs: EcsEngine<Entity>) {
+        super(ecs);
 
-        this._archetype = miniplex.archetype("moveOnKeys", "physics") as Archetype<Entity>;
+        this._archetype = ecs.archetype("moveOnKeys", "physics") as Archetype<Entity>;
         this._listener = new KeypressListener();
     }
 
