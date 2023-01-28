@@ -29,6 +29,17 @@ export class KeyMoveSystem extends System {
             }
         });
     }
+
+    public update(dt: number) {
+        for (let entity of this._archetype.entities) {
+            const body = entity.physics;
+            Body.setPosition(body, {
+                x: body.position.x + body.velocity.x,
+                y: body.position.y + body.velocity.y,
+            });
+            // console.log(entity.physics.velocity);
+        }
+    }
 }
 
 export default KeyMoveSystem;

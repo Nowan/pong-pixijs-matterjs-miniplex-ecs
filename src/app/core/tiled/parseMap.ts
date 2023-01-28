@@ -1,5 +1,5 @@
 import { Container, DisplayObject, Graphics, Rectangle } from "pixi.js";
-import TiledMap, { TiledLayer, TiledObject, TiledLayerTilelayer, TiledLayerObjectgroup, Point } from "tiled-types";
+import TiledMap, { TiledLayer, TiledObject, TiledLayerTilelayer, TiledLayerObjectgroup } from "tiled-types";
 import { TiledMapContainer, TiledLayerContainer } from "./TiledMapContainer";
 import { PartiallyRequired, isPartiallyRequired } from "../utils/utilityTypes";
 
@@ -101,7 +101,10 @@ function parsePolyline(tiledObject: PartiallyRequired<TiledObject, "polyline">):
 
 function parseRect(tiledObject: TiledObject): Graphics {
     return copyProperties(
-        new Graphics().beginFill(0xffffff).drawRect(0, 0, tiledObject.width, tiledObject.height).endFill(),
+        new Graphics()
+            .beginFill(0xffffff)
+            .drawRect(-tiledObject.width * 0.5, -tiledObject.height * 0.5, tiledObject.width, tiledObject.height)
+            .endFill(),
         tiledObject,
     );
 }

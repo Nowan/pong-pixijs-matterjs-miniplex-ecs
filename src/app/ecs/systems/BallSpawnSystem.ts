@@ -20,7 +20,7 @@ export class BallSpawnSystem extends System {
     init() {
         const ballEntity = this._ecs.createEntity(createBallEntity(this._level)) as BallEntity;
 
-        Body.setVelocity(ballEntity.physics, { x: 0, y: 10 });
+        Body.setVelocity(ballEntity.physics, { x: 10, y: 0 });
     }
 }
 
@@ -32,7 +32,12 @@ function createBallEntity(level: LevelContainer): BallEntity {
     return {
         id: "Ball",
         pixi: graphics,
-        physics: Bodies.circle(spawnPoint.x, spawnPoint.y, Math.max(graphics.width, graphics.height) * 0.5),
+        physics: Bodies.circle(spawnPoint.x, spawnPoint.y, Math.max(graphics.width, graphics.height) * 0.5, {
+            restitution: 1,
+            friction: 0,
+            frictionAir: 0,
+            frictionStatic: 0,
+        }),
     };
 }
 

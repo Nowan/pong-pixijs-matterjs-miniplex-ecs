@@ -28,6 +28,6 @@ function composePaddleEntity(paddle: Graphics, moveOnKeys: MoveOnKeysComponent["
         moveOnKeys,
         id: paddle.name,
         pixi: paddle,
-        physics: Bodies.rectangle(paddle.x, paddle.y, paddle.width, paddle.height),
+        physics: Bodies.rectangle(paddle.x, paddle.y, paddle.width, paddle.height, { isStatic: true }),
     };
 }
