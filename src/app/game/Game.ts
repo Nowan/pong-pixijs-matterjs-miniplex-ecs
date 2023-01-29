@@ -1,6 +1,14 @@
 import { Engine as PhysicsEngine, Runner } from "matter-js";
 import { World as EcsEngine } from "miniplex";
-import { Entity, System, PhysicsSystem, KeyMoveSystem, BallSpawnSystem, EntityFactory } from "./ecs";
+import {
+    Entity,
+    EntityFactory,
+    System,
+    PhysicsSystem,
+    KeyMoveSystem,
+    BallSpawnSystem,
+    DeadzoneCollisionSystem,
+} from "./ecs";
 import { LevelContainer } from "./parseLevel";
 import TiledMap from "tiled-types/types";
 
@@ -60,7 +68,12 @@ function createEcsEngine(): EcsEngine<Entity> {
 }
 
 function createSystems(level: LevelContainer, { ecs, physics }: Engines, entityFactory: EntityFactory): Array<System> {
-    return [new PhysicsSystem(ecs, physics), new KeyMoveSystem(ecs), new BallSpawnSystem(ecs, level, entityFactory)];
+    return [
+        new PhysicsSystem(ecs, physics),
+        new KeyMoveSystem(ecs),
+        new DeadzoneCollisionSystem(ecs, physics),
+        new BallSpawnSystem(ecs, level, entityFactory),
+    ];
 }
 
 function createEntityFactory(level: LevelContainer, { ecs }: Engines) {

@@ -20,11 +20,14 @@ export class BallSpawnSystem extends System {
     }
 
     init() {
-        const serveLine = this._level.serveLine;
-        const ballEntity = this._entityFactory.createBallEntity();
+        // Temporary, need to resolve initialization sequence order later
+        setTimeout(() => {
+            const serveLine = this._level.serveLine;
+            const ballEntity = this._entityFactory.createBallEntity();
 
-        Body.setPosition(ballEntity.physics, pickRandomPointOnLine(...serveLine));
-        Body.setVelocity(ballEntity.physics, pickInitialVelocity());
+            Body.setPosition(ballEntity.physics, pickRandomPointOnLine(...serveLine));
+            Body.setVelocity(ballEntity.physics, pickInitialVelocity());
+        }, 0);
     }
 }
 

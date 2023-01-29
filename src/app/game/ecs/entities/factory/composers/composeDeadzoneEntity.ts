@@ -14,10 +14,11 @@ export function composeRightDeadzoneEntity(level: LevelContainer): ReturnType<ty
 export function composeDeadzoneEntity(id: string, graphics: Graphics): DeadzoneEntity {
     return {
         id,
-        physics: Bodies.rectangle(0, 0, 10, 10, {
+        physics: Bodies.rectangle(graphics.x, graphics.y, graphics.width, graphics.height, {
             isStatic: true,
             isSensor: true,
         }),
+        deadzone: true,
     };
 }
 

@@ -1,15 +1,20 @@
 import { ExcludeKeys } from "../../../core/utils/utilityTypes";
-import { PixiComponent, PhysicsComponent, MoveOnKeysComponent } from "../components";
+import { PixiComponent, PhysicsComponent, MoveOnKeysComponent, BallComponent, DeadzoneComponent } from "../components";
 
-export type Entity = { id: string } & Partial<PixiComponent & MoveOnKeysComponent & PhysicsComponent>;
+export type Entity = { id: string } & Partial<
+    PixiComponent & MoveOnKeysComponent & PhysicsComponent & BallComponent & DeadzoneComponent
+>;
 
-export type BallEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent>>;
+export type PhysicsEntity = Required<Pick<Entity, "id" | keyof PhysicsComponent>>;
 
-export type PaddleEntity = Required<Entity>;
+export type PixiPhysicsEntity = PhysicsEntity & Required<Pick<Entity, keyof PixiComponent>>;
 
-export type LevelBorderEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent>>;
+export type BallEntity = PixiPhysicsEntity & BallComponent;
 
-export type DeadzoneEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent | keyof PixiComponent>>;
-// export type LevelBorderEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent | keyof PixiComponent>>;
+export type PaddleEntity = PixiPhysicsEntity & MoveOnKeysComponent;
+
+export type LevelBorderEntity = PixiPhysicsEntity;
+
+export type DeadzoneEntity = PhysicsEntity & DeadzoneComponent;
 
 export default Entity;

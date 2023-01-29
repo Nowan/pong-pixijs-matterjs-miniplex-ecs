@@ -15,6 +15,7 @@ export function composeBallEntity(level: LevelContainer): BallEntity {
             frictionAir: 0,
             frictionStatic: 0,
         }),
+        ball: true,
     };
 }
 

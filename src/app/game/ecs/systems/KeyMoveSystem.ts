@@ -6,19 +6,19 @@ import { World as EcsEngine, Archetype } from "miniplex";
 
 export class KeyMoveSystem extends System {
     private _archetype: Archetype<Entity>;
-    private _listener: KeypressListener;
+    private _keypressListener: KeypressListener;
 
     constructor(ecs: EcsEngine<Entity>) {
         super(ecs);
 
         this._archetype = ecs.archetype("moveOnKeys", "physics") as Archetype<Entity>;
-        this._listener = new KeypressListener();
+        this._keypressListener = new KeypressListener();
     }
 
     public init(): void {
         this._archetype.onEntityAdded.add((entity) => {
             for (let [moveKey, moveDirection] of Object.entries(entity.moveOnKeys)) {
-                this._listener.register_many([
+                this._keypressListener.register_many([
                     {
                         keys: moveKey,
                         on_keydown: () => Body.setVelocity(entity.physics, { x: 0, y: moveDirection * 10 }),
