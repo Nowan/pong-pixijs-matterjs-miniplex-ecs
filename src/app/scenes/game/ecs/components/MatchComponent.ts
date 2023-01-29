@@ -6,7 +6,7 @@ export interface MatchComponentDataObject {
     score: MatchScore;
     numberOfPointsToWin: number;
     nextServeByPlayer: Player | null;
-    wonByPlayer: Player | null;
+    wonByPlayer?: Player;
 }
 
 export interface MatchComponent {

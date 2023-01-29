@@ -26,6 +26,7 @@ export default class Game {
     private _entityFactory: EntityFactory;
     private _systems: Array<System>;
     private _matchSystem: MatchSystem;
+    private _physicsRunner: Runner | null = null;
 
     constructor(levelData: TiledMap) {
         this.events = new utils.EventEmitter();
@@ -48,8 +49,18 @@ export default class Game {
     }
 
     public update(timeSinceLastFrameInS: number) {
-        this._engines.ecs.queue.flush();
-        this._systems.forEach((system) => system.update?.(timeSinceLastFrameInS));
+        if (this._physicsRunner?.enabled) {
+            this._engines.ecs.queue.flush();
+            this._systems.forEach((system) => system.update?.(timeSinceLastFrameInS));
+        }
+    }
+
+    public pause(): void {
+        if (this._physicsRunner) this._physicsRunner.enabled = false;
+    }
+
+    public resume(): void {
+        if (this._physicsRunner) this._physicsRunner.enabled = true;
     }
 
     private _initSystems(): void {
@@ -68,7 +79,7 @@ export default class Game {
     }
 
     private _initPhysics(): void {
-        Runner.run(this._engines.physics);
+        this._physicsRunner = Runner.run(this._engines.physics);
     }
 }
 
@@ -104,4 +115,4 @@ function lookupMatchSystem(systems: Array<System>): MatchSystem | undefined {
     return systems.find((system) => system instanceof MatchSystem) as MatchSystem | undefined;
 }
 
-export * from "./core/Event";
+export * from "./events/GameEvent";

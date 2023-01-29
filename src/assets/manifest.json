@@ -1,15 +1,11 @@
 {
     "bundles": [
         {
-            "name": "mainScene",
+            "name": "gameScene",
             "assets": [
                 {
-                    "name": "assets/textures/background.jpg",
-                    "srcs": "assets/textures/background.jpg"
-                },
-                {
-                    "name": "assets/textures/cardsDeck.json",
-                    "srcs": "assets/textures/cardsDeck.json"
+                    "name": "assets/textures/gui.json",
+                    "srcs": "assets/textures/gui.json"
                 }
             ]
         }

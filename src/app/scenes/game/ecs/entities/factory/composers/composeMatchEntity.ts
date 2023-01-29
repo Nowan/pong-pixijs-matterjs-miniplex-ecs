@@ -12,7 +12,7 @@ export function composeMatchEntity(numberOfPointsToWin?: number): MatchEntity {
                 [Player.ONE]: 0,
                 [Player.TWO]: 0,
             },
-            wonByPlayer: null,
+            nextServeByPlayer: null,
         },
     };
 }

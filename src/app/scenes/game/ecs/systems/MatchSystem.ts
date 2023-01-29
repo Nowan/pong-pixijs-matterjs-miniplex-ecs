@@ -1,7 +1,7 @@
 import System from "./System";
 import { World as EcsEngine, Archetype, RegisteredEntity } from "miniplex";
 import { Entity, EntityFactory, MatchEntity, RoundEntity } from "../entities";
-import { Event } from "../../core/Event";
+import GameEvent from "../../events/GameEvent";
 import Player, { opposite } from "../../core/Player";
 import { utils } from "pixi.js";
 
@@ -27,17 +27,17 @@ export class MatchSystem extends System {
             this.entity.match.score[round.wonByPlayer!] += 1;
             this.entity.match.nextServeByPlayer = opposite(round.servedByPlayer);
 
-            this._eventBus.emit(Event.ROUND_END);
+            this._eventBus.emit(GameEvent.ROUND_END);
         });
     }
 
     update() {
         if (this._archetype.entities.length === 0) {
             if (checkPlayerWin(this.entity)) {
-                this._eventBus.emit(Event.MATCH_END);
+                this._eventBus.emit(GameEvent.MATCH_END);
             } else {
                 this._entityFactory.createRoundEntity(pickNextPlayerToServe(this.entity));
-                this._eventBus.emit(Event.ROUND_START);
+                this._eventBus.emit(GameEvent.ROUND_START);
             }
         }
     }
