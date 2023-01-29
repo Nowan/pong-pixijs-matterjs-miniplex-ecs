@@ -85,10 +85,10 @@
                     "y": 305
                 },
                 {
-                    "class": "Sensor",
+                    "class": "Deadzone",
                     "height": 630,
                     "id": 5,
-                    "name": "SENSOR_LEFT",
+                    "name": "DEADZONE_LEFT",
                     "rotation": 0,
                     "visible": false,
                     "width": 30,
@@ -96,10 +96,10 @@
                     "y": 0
                 },
                 {
-                    "class": "Sensor",
+                    "class": "Deadzone",
                     "height": 630,
                     "id": 7,
-                    "name": "SENSOR_RIGHT",
+                    "name": "DEADZONE_RIGHT",
                     "rotation": 0,
                     "visible": false,
                     "width": 30,

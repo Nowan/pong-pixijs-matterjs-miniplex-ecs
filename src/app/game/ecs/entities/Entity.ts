@@ -9,6 +9,7 @@ export type PaddleEntity = Required<Entity>;
 
 export type LevelBorderEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent>>;
 
+export type DeadzoneEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent | keyof PixiComponent>>;
 // export type LevelBorderEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent | keyof PixiComponent>>;
 
 export default Entity;

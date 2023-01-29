@@ -3,14 +3,14 @@ import { Graphics } from "pixi.js";
 import { MoveDirection, MoveKey, MoveOnKeysComponent } from "../../../components";
 import { PaddleEntity } from "../../Entity";
 
-export function composeLeftPaddleEntity(graphics: Graphics): PaddleEntity {
+export function composeLeftPaddleEntity(graphics: Graphics): ReturnType<typeof composePaddleEntity> {
     return composePaddleEntity("PADDLE_LEFT", graphics, {
         [MoveKey.W]: MoveDirection.UP,
         [MoveKey.S]: MoveDirection.DOWN,
     });
 }
 
-export function composeRightPaddleEntity(graphics: Graphics): PaddleEntity {
+export function composeRightPaddleEntity(graphics: Graphics): ReturnType<typeof composePaddleEntity> {
     return composePaddleEntity("PADDLE_RIGHT", graphics, {
         [MoveKey.ARROW_UP]: MoveDirection.UP,
         [MoveKey.ARROW_DOWN]: MoveDirection.DOWN,

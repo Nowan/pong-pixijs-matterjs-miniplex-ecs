@@ -3,11 +3,11 @@ import { Graphics } from "pixi.js";
 import { LevelContainer, LineData } from "../../../../parseLevel";
 import { LevelBorderEntity } from "../../Entity";
 
-export function composeUpperBorderEntity(level: LevelContainer): LevelBorderEntity {
+export function composeUpperBorderEntity(level: LevelContainer): ReturnType<typeof composeBorderEntity> {
     return composeBorderEntity("BORDER_UPPER", level.borderUpper, level.borderLines.upper);
 }
 
-export function composeLowerBorderEntity(level: LevelContainer): LevelBorderEntity {
+export function composeLowerBorderEntity(level: LevelContainer): ReturnType<typeof composeBorderEntity> {
     return composeBorderEntity("BORDER_LOWER", level.borderLower, level.borderLines.lower);
 }
 

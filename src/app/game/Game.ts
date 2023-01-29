@@ -38,8 +38,12 @@ export default class Game {
     private _initEntities(): void {
         this._entityFactory.createLeftPaddleEntity();
         this._entityFactory.createRightPaddleEntity();
+
         this._entityFactory.createLowerBorderEntity();
         this._entityFactory.createUpperBorderEntity();
+
+        this._entityFactory.createLeftDeadzoneEntity();
+        this._entityFactory.createRightDeadzoneEntity();
     }
 
     private _initPhysics(): void {

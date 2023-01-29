@@ -17,6 +17,10 @@ export type LevelContainer = TiledMapContainer & {
         upper: LineData;
         lower: LineData;
     };
+    deadzones: {
+        left: Graphics;
+        right: Graphics;
+    };
     serveLine: LineData;
     borderUpper: Graphics;
     borderLower: Graphics;
@@ -29,6 +33,8 @@ export default function parseLevel(levelData: TiledMap): LevelContainer {
     const paddleRight = selectObjectWithName<Graphics>(level, "PADDLE_RIGHT");
     const borderUpper = selectObjectWithName<Graphics>(level, "BORDER_UPPER");
     const borderLower = selectObjectWithName<Graphics>(level, "BORDER_LOWER");
+    const deadzoneLeft = selectObjectWithName<Graphics>(level, "DEADZONE_LEFT");
+    const deadzoneRight = selectObjectWithName<Graphics>(level, "DEADZONE_RIGHT");
 
     level.data = levelData;
 
@@ -41,6 +47,12 @@ export default function parseLevel(levelData: TiledMap): LevelContainer {
     }
     if (borderUpper) level.borderUpper = borderUpper;
     if (borderLower) level.borderLower = borderLower;
+    if (deadzoneLeft && deadzoneRight) {
+        level.deadzones = {
+            left: deadzoneLeft,
+            right: deadzoneRight,
+        };
+    }
 
     level.serveLine = parseServeLine(levelData);
     level.borderLines = parseBorderLines(levelData);
@@ -61,7 +73,7 @@ function parseBorderLines(levelData: TiledMap): LevelContainer["borderLines"] {
 
 function parsePolyline(levelData: TiledMap, objectName: string): LineData {
     const [tiledObject] = selectObjectsOfName<PartiallyRequired<TiledObject, "polyline">>(levelData, objectName);
-    console.log(objectName, tiledObject.polyline);
+
     return tiledObject.polyline.map((point) => ({
         x: point.x + tiledObject.x,
         y: point.y + tiledObject.y,

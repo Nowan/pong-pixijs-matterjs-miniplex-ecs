@@ -110,13 +110,15 @@ function parsePolyline(tiledObject: PartiallyRequired<TiledObject, "polyline">):
 }
 
 function parseRect(tiledObject: TiledObject): Graphics {
-    return copyProperties(
+    const rect = copyProperties(
         new Graphics()
             .beginFill(0xffffff)
             .drawRect(-tiledObject.width * 0.5, -tiledObject.height * 0.5, tiledObject.width, tiledObject.height)
             .endFill(),
         tiledObject,
     );
+    rect.position.set(rect.x + tiledObject.width * 0.5, rect.y + tiledObject.height * 0.5);
+    return rect;
 }
 
 function copyProperties<T extends DisplayObject>(displayObject: T, tiledObject: TiledObject): T {
