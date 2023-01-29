@@ -2,7 +2,7 @@ import { Assets } from "@pixi/assets";
 import { Viewport } from "pixi-viewport";
 import Scene, { FacadeRefs } from "../core/sceneManagement/Scene";
 import TiledMap from "tiled-types";
-import parseLevel from "../game/parseLevel";
+import parseLevel, { LevelContainer } from "../game/utils/parseLevel";
 import Game from "../game/Game";
 
 const LEVEL_DATA_PATH = "assets/levels/main.tiled.json";
@@ -36,7 +36,7 @@ export default class GameScene extends Scene {
         this._viewport.resize(undefined, undefined, level.staticBounds.width, level.staticBounds.height);
         this._viewport.addChild(level);
 
-        this._game = new Game(levelData, level);
+        this._game = this._createGame(level);
         this._game.init();
     }
 
@@ -48,5 +48,13 @@ export default class GameScene extends Scene {
 
     public update(timeSinceLastFrameInS: number): void {
         this._game?.update(timeSinceLastFrameInS);
+    }
+
+    private _createGame(level: LevelContainer): Game {
+        const game = new Game(level);
+
+        // TODO: listen to events?
+
+        return game;
     }
 }

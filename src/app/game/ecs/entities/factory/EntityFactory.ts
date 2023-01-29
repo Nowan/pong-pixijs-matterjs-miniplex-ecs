@@ -1,5 +1,5 @@
 import { RegisteredEntity, World as EcsEngine } from "miniplex";
-import { LevelContainer } from "../../../parseLevel";
+import { LevelContainer } from "../../../utils/parseLevel";
 import Player from "../../../Player";
 import {
     Entity,
@@ -31,12 +31,12 @@ export class EntityFactory {
         this._level = level;
     }
 
-    public createMatchEntity(id: string, numberOfPointsToWin?: number): RegisteredEntity<MatchEntity> {
-        return this._register(composeMatchEntity(id, numberOfPointsToWin));
+    public createMatchEntity(numberOfPointsToWin?: number): RegisteredEntity<MatchEntity> {
+        return this._register(composeMatchEntity(numberOfPointsToWin));
     }
 
-    public createRoundEntity(matchId: string, servingPlayer: Player): RegisteredEntity<RoundEntity> {
-        return this._register(composeRoundEntity(matchId, servingPlayer));
+    public createRoundEntity(servingPlayer: Player): RegisteredEntity<RoundEntity> {
+        return this._register(composeRoundEntity(servingPlayer));
     }
 
     public createLeftPaddleEntity(): RegisteredEntity<PaddleEntity> {

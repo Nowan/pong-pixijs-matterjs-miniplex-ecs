@@ -1,9 +1,9 @@
 import { Graphics, IPointData } from "pixi.js";
 import { TiledMap, TiledObject } from "tiled-types";
-import { TiledMapContainer } from "../core/tiled";
-import parseTiledMap from "../core/tiled/parseMap";
-import { selectObjectsOfName, selectObjectWithName } from "../core/tiled/selectors";
-import { PartiallyRequired } from "../core/utils/utilityTypes";
+import { TiledMapContainer } from "../../core/tiled";
+import parseTiledMap from "../../core/tiled/parseMap";
+import { selectObjectsOfName, selectObjectWithName } from "../../core/tiled/selectors";
+import { PartiallyRequired } from "../../core/utils/utilityTypes";
 
 export type LineData = [pointA: IPointData, pointB: IPointData];
 export type LevelContainer = TiledMapContainer & {

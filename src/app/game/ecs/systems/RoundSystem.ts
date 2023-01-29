@@ -1,8 +1,8 @@
 import { Body, Vector } from "matter-js";
-import { World as EcsEngine, Archetype } from "miniplex";
+import { World as EcsEngine, Archetype, RegisteredEntity } from "miniplex";
 import { IPointData } from "pixi.js";
-import { LevelContainer } from "../../parseLevel";
-import Player from "../../Player";
+import { LevelContainer } from "../../utils/parseLevel";
+import Player, { opposite } from "../../Player";
 import { DeadzoneEntity, Entity, EntityFactory, RoundEntity } from "../entities";
 import System from "./System";
 
@@ -13,6 +13,7 @@ export class RoundSystem extends System {
         round: Archetype<RoundEntity>;
         deadzone: Archetype<DeadzoneEntity>;
     };
+    private _entity: RegisteredEntity<RoundEntity> | null;
 
     constructor(ecs: EcsEngine<Entity>, entityFactory: EntityFactory, level: LevelContainer) {
         super(ecs);
@@ -23,33 +24,58 @@ export class RoundSystem extends System {
             round: ecs.archetype("round") as Archetype<RoundEntity>,
             deadzone: ecs.archetype("deadzone") as Archetype<DeadzoneEntity>,
         };
+        this._entity = null;
     }
 
     public init(): void {
         this._archetypes.round.onEntityAdded.add((entity) => {
-            this._serveBall(entity.round.servedByPlayer);
+            this._entity = entity;
+        });
+
+        this._archetypes.round.onEntityRemoved.add((entity) => {
+            if (this._entity === entity) this._entity = null;
         });
     }
 
     public update(): void {
-        if (this._archetypes.round.entities.length === 0) return;
+        if (!this._entity || this._entity.round.finished) return;
+        this._attemptStartRound();
+        this._attemptEndRound();
+    }
 
-        for (let { deadzone } of this._archetypes.deadzone.entities) {
-            if (deadzone.triggered) {
-                const [entity] = this._archetypes.round.entities;
-                entity.round.lostByPlayer = deadzone.keeper;
+    private _attemptStartRound() {
+        if (this._entity && !this._entity.round.started) {
+            this._entity.round.started = true;
+            this._spawnBallAndServe(this._entity.round.servedByPlayer);
+        }
+    }
 
-                this.ecs.queue.destroyEntity(entity);
+    private _attemptEndRound() {
+        if (this._entity) {
+            const triggeredDeadzoneKeeer = this._checkTriggeredDeadzones();
+
+            if (triggeredDeadzoneKeeer) {
+                this._entity.round.finished = true;
+                this._entity.round.wonByPlayer = opposite(triggeredDeadzoneKeeer);
+
+                this.ecs.queue.destroyEntity(this._entity);
             }
         }
     }
 
-    private _serveBall(servingPlayer: Player): void {
+    private _spawnBallAndServe(servingPlayer: Player): void {
         const serveLine = this._level.serveLine;
         const ballEntity = this._entityFactory.createBallEntity();
 
         Body.setPosition(ballEntity.physics, pickRandomPointOnLine(...serveLine));
         Body.setVelocity(ballEntity.physics, pickInitialVelocity(servingPlayer));
+    }
+
+    private _checkTriggeredDeadzones(): Player | null {
+        for (let { deadzone } of this._archetypes.deadzone.entities) {
+            if (deadzone.triggered) return deadzone.keeper;
+        }
+        return null;
     }
 }
 

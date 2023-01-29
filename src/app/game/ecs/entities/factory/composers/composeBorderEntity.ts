@@ -1,6 +1,6 @@
 import { Bodies } from "matter-js";
 import { Graphics } from "pixi.js";
-import { LevelContainer, LineData } from "../../../../parseLevel";
+import { LevelContainer, LineData } from "../../../../utils/parseLevel";
 import { LevelBorderEntity } from "../../Entity";
 
 export function composeUpperBorderEntity(level: LevelContainer): ReturnType<typeof composeBorderEntity> {

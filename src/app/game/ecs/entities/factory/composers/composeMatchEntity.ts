@@ -3,9 +3,9 @@ import { MatchEntity } from "../../Entity";
 
 const DEFAULT_NUMBER_OF_POINTS_TO_WIN = 11;
 
-export function composeMatchEntity(id: string, numberOfPointsToWin?: number): MatchEntity {
+export function composeMatchEntity(numberOfPointsToWin?: number): MatchEntity {
     return {
-        id,
+        id: "Match",
         match: {
             numberOfPointsToWin: numberOfPointsToWin || DEFAULT_NUMBER_OF_POINTS_TO_WIN,
             score: {

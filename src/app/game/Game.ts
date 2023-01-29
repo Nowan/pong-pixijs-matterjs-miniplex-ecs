@@ -11,20 +11,17 @@ import {
     DeadzoneCollisionSystem,
     PixiSystem,
 } from "./ecs";
-import { LevelContainer } from "./parseLevel";
-import TiledMap from "tiled-types/types";
+import { LevelContainer } from "./utils/parseLevel";
 
 type Engines = { physics: PhysicsEngine; ecs: EcsEngine<Entity> };
 
 export default class Game {
-    private _levelData: TiledMap;
     private _level: LevelContainer;
     private _engines: Engines;
     private _entityFactory: EntityFactory;
     private _systems: Array<System>;
 
-    constructor(levelData: TiledMap, level: LevelContainer) {
-        this._levelData = levelData;
+    constructor(level: LevelContainer) {
         this._level = level;
         this._engines = { physics: createPhysicsEngine(), ecs: createEcsEngine() };
         this._entityFactory = createEntityFactory(this._level, this._engines);
@@ -55,8 +52,6 @@ export default class Game {
 
         this._entityFactory.createLeftDeadzoneEntity();
         this._entityFactory.createRightDeadzoneEntity();
-
-        this._entityFactory.createMatchEntity("Match");
     }
 
     private _initPhysics(): void {
@@ -74,10 +69,10 @@ function createEcsEngine(): EcsEngine<Entity> {
 
 function createSystems(level: LevelContainer, { ecs, physics }: Engines, entityFactory: EntityFactory): Array<System> {
     return [
+        new KeyMoveSystem(ecs),
+        new PhysicsSystem(ecs, physics),
         new MatchSystem(ecs, entityFactory, level),
         new RoundSystem(ecs, entityFactory, level),
-        new PhysicsSystem(ecs, physics),
-        new KeyMoveSystem(ecs),
         new DeadzoneCollisionSystem(ecs),
         new PixiSystem(ecs, level),
     ];

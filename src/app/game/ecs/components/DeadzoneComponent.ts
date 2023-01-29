@@ -1,10 +1,12 @@
 import Player from "../../Player";
 
+export interface DeadzoneComponentDataObject {
+    triggered: boolean;
+    keeper: Player;
+}
+
 export interface DeadzoneComponent {
-    deadzone: {
-        triggered: boolean;
-        keeper: Player;
-    };
+    deadzone: DeadzoneComponentDataObject;
 }
 
 export default DeadzoneComponent;

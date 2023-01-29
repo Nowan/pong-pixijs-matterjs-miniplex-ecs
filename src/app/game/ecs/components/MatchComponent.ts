@@ -1,16 +1,15 @@
 import Player from "../../Player";
 
-export interface Round {
-    serviceFrom: Player;
-    winner: Player | null;
+export type MatchScore = Record<Player, number>;
+
+export interface MatchComponentDataObject {
+    score: MatchScore;
+    numberOfPointsToWin: number;
+    wonByPlayer: Player | null;
 }
 
 export interface MatchComponent {
-    match: {
-        score: Record<Player, number>;
-        numberOfPointsToWin: number;
-        wonByPlayer: Player | null;
-    };
+    match: MatchComponentDataObject;
 }
 
 export default MatchComponent;

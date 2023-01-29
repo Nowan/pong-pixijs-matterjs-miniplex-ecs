@@ -10,8 +10,10 @@ export enum MoveDirection {
     DOWN = 1,
 }
 
+export type MoveOnKeysComponentDataObject = Partial<Record<MoveKey, MoveDirection>>;
+
 export interface MoveOnKeysComponent {
-    moveOnKeys: Partial<Record<MoveKey, MoveDirection>>;
+    moveOnKeys: MoveOnKeysComponentDataObject;
 }
 
 export default MoveOnKeysComponent;

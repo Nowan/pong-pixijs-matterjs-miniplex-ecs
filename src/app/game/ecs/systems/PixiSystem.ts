@@ -1,7 +1,7 @@
 import System from "./System";
 import { World as EcsEngine, Archetype } from "miniplex";
 import { Entity, PixiEntity, PixiPhysicsEntity } from "../entities";
-import { LevelContainer } from "../../parseLevel";
+import { LevelContainer } from "../../utils/parseLevel";
 
 export class PixiSystem extends System {
     private _level: LevelContainer;
