@@ -1,5 +1,6 @@
 import { Engine as PhysicsEngine, Runner } from "matter-js";
 import { World as EcsEngine } from "miniplex";
+import { utils } from "pixi.js";
 import {
     Entity,
     EntityFactory,
@@ -10,22 +11,33 @@ import {
     RoundSystem,
     DeadzoneCollisionSystem,
     PixiSystem,
+    MatchScore,
 } from "./ecs";
 import { LevelContainer } from "./utils/parseLevel";
 
 type Engines = { physics: PhysicsEngine; ecs: EcsEngine<Entity> };
 
 export default class Game {
+    public events: utils.EventEmitter;
+
     private _level: LevelContainer;
     private _engines: Engines;
     private _entityFactory: EntityFactory;
     private _systems: Array<System>;
+    private _matchSystem: MatchSystem;
 
     constructor(level: LevelContainer) {
+        this.events = new utils.EventEmitter();
+
         this._level = level;
         this._engines = { physics: createPhysicsEngine(), ecs: createEcsEngine() };
         this._entityFactory = createEntityFactory(this._level, this._engines);
-        this._systems = createSystems(this._level, this._engines, this._entityFactory);
+        this._systems = createSystems(this._level, this._engines, this._entityFactory, this.events);
+        this._matchSystem = lookupMatchSystem(this._systems)!;
+    }
+
+    public get score(): MatchScore {
+        return this._matchSystem.entity.match.score;
     }
 
     public init() {
@@ -67,17 +79,28 @@ function createEcsEngine(): EcsEngine<Entity> {
     return new EcsEngine<Entity>();
 }
 
-function createSystems(level: LevelContainer, { ecs, physics }: Engines, entityFactory: EntityFactory): Array<System> {
+function createEntityFactory(level: LevelContainer, { ecs }: Engines) {
+    return new EntityFactory(ecs, level);
+}
+
+function createSystems(
+    level: LevelContainer,
+    { ecs, physics }: Engines,
+    entityFactory: EntityFactory,
+    eventBus: utils.EventEmitter,
+): Array<System> {
     return [
         new KeyMoveSystem(ecs),
         new PhysicsSystem(ecs, physics),
-        new MatchSystem(ecs, entityFactory, level),
+        new MatchSystem(ecs, entityFactory, eventBus),
         new RoundSystem(ecs, entityFactory, level),
         new DeadzoneCollisionSystem(ecs),
         new PixiSystem(ecs, level),
     ];
 }
 
-function createEntityFactory(level: LevelContainer, { ecs }: Engines) {
-    return new EntityFactory(ecs, level);
+function lookupMatchSystem(systems: Array<System>): MatchSystem | undefined {
+    return systems.find((system) => system instanceof MatchSystem) as MatchSystem | undefined;
 }
+
+export * from "./Event";

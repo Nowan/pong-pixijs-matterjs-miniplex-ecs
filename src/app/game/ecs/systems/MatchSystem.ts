@@ -1,39 +1,44 @@
 import System from "./System";
 import { World as EcsEngine, Archetype, RegisteredEntity } from "miniplex";
 import { Entity, EntityFactory, MatchEntity, RoundEntity } from "../entities";
-import { LevelContainer } from "../../utils/parseLevel";
+import { Event } from "../../Event";
 import Player from "../../Player";
+import { utils } from "pixi.js";
 
 export class MatchSystem extends System {
     public entity: RegisteredEntity<MatchEntity>;
 
     private _entityFactory: EntityFactory;
-    private _level: LevelContainer;
+    private _eventBus: utils.EventEmitter;
     private _archetype: Archetype<RoundEntity>;
 
-    constructor(ecs: EcsEngine<Entity>, entityFactory: EntityFactory, level: LevelContainer) {
+    constructor(ecs: EcsEngine<Entity>, entityFactory: EntityFactory, eventBus: utils.EventEmitter) {
         super(ecs);
 
         this.entity = entityFactory.createMatchEntity();
 
         this._entityFactory = entityFactory;
-        this._level = level;
+        this._eventBus = eventBus;
         this._archetype = ecs.archetype("round") as Archetype<RoundEntity>;
     }
 
     init() {
         this._archetype.onEntityRemoved.add(({ round }) => {
             this.entity.match.score[round.wonByPlayer!] += 1;
+
+            this._eventBus.emit(Event.ROUND_END);
         });
     }
 
     update() {
         if (this._archetype.entities.length === 0) {
             if (checkPlayerWin(this.entity)) {
-                console.log("WON");
+                this._eventBus.emit(Event.MATCH_END);
             } else {
                 const firstPlayerToServe = Math.random() < 0.5 ? Player.ONE : Player.TWO;
+
                 this._entityFactory.createRoundEntity(firstPlayerToServe);
+                this._eventBus.emit(Event.ROUND_START);
             }
         }
     }

@@ -3,7 +3,7 @@ import { Viewport } from "pixi-viewport";
 import Scene, { FacadeRefs } from "../core/sceneManagement/Scene";
 import TiledMap from "tiled-types";
 import parseLevel, { LevelContainer } from "../game/utils/parseLevel";
-import Game from "../game/Game";
+import Game, { Event as GameEvent } from "../game/Game";
 
 const LEVEL_DATA_PATH = "assets/levels/main.tiled.json";
 
@@ -53,7 +53,9 @@ export default class GameScene extends Scene {
     private _createGame(level: LevelContainer): Game {
         const game = new Game(level);
 
-        // TODO: listen to events?
+        game.events.on(GameEvent.ROUND_START, () => console.log(GameEvent.ROUND_START));
+        game.events.on(GameEvent.ROUND_END, () => console.log(GameEvent.ROUND_END));
+        game.events.on(GameEvent.MATCH_END, () => console.log(GameEvent.MATCH_END));
 
         return game;
     }
