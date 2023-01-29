@@ -1,4 +1,4 @@
-import { ExcludeKeys } from "../../core/utils/utilityTypes";
+import { ExcludeKeys } from "../../../core/utils/utilityTypes";
 import { PixiComponent, PhysicsComponent, MoveOnKeysComponent } from "../components";
 
 export type Entity = { id: string } & Partial<PixiComponent & MoveOnKeysComponent & PhysicsComponent>;
