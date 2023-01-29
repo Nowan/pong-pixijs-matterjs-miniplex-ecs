@@ -9,7 +9,49 @@
             "name": "SETUP",
             "objects": [
                 {
-                    "class": "Racket",
+                    "class": "Border",
+                    "height": 0,
+                    "id": 12,
+                    "name": "BORDER_LOWER",
+                    "polyline": [
+                        {
+                            "x": 0,
+                            "y": 0
+                        },
+                        {
+                            "x": 990,
+                            "y": 0
+                        }
+                    ],
+                    "rotation": 0,
+                    "visible": true,
+                    "width": 0,
+                    "x": 0,
+                    "y": 630
+                },
+                {
+                    "class": "Border",
+                    "height": 0,
+                    "id": 11,
+                    "name": "BORDER_UPPER",
+                    "polyline": [
+                        {
+                            "x": 0,
+                            "y": 0
+                        },
+                        {
+                            "x": 990,
+                            "y": 0
+                        }
+                    ],
+                    "rotation": 0,
+                    "visible": true,
+                    "width": 0,
+                    "x": 0,
+                    "y": 0
+                },
+                {
+                    "class": "Paddle",
                     "height": 150,
                     "id": 2,
                     "name": "PADDLE_LEFT",
@@ -20,7 +62,7 @@
                     "y": 240
                 },
                 {
-                    "class": "Racket",
+                    "class": "Paddle",
                     "height": 150,
                     "id": 3,
                     "name": "PADDLE_RIGHT",
@@ -94,7 +136,7 @@
         }
     ],
     "nextlayerid": 4,
-    "nextobjectid": 10,
+    "nextobjectid": 13,
     "orientation": "orthogonal",
     "renderorder": "right-down",
     "tiledversion": "1.9.2",

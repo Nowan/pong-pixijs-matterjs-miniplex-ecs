@@ -7,4 +7,8 @@ export type BallEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent>
 
 export type PaddleEntity = Required<Entity>;
 
+export type LevelBorderEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent>>;
+
+// export type LevelBorderEntity = Required<ExcludeKeys<Entity, keyof MoveOnKeysComponent | keyof PixiComponent>>;
+
 export default Entity;

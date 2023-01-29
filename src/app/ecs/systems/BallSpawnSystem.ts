@@ -20,14 +20,14 @@ export class BallSpawnSystem extends System {
     init() {
         const ballEntity = this._ecs.createEntity(createBallEntity(this._level)) as BallEntity;
 
-        Body.setVelocity(ballEntity.physics, { x: 10, y: 0 });
+        Body.setVelocity(ballEntity.physics, { x: -10, y: 0 });
     }
 }
 
 function createBallEntity(level: LevelContainer): BallEntity {
     const graphics = createBallGraphics(level);
     const serveLine = level.serveLine;
-    const spawnPoint = pickRandomPointOnLine(serveLine.start, serveLine.end);
+    const spawnPoint = pickRandomPointOnLine(...serveLine);
 
     return {
         id: "Ball",

@@ -3,24 +3,27 @@ import { World as EcsEngine } from "miniplex";
 import { Entity, System, PhysicsSystem, KeyMoveSystem, BallSpawnSystem } from "../ecs";
 import { LevelContainer } from "./parseLevel";
 import initEntities from "./initEntities";
+import TiledMap from "tiled-types/types";
 
 type Engines = { physics: PhysicsEngine; ecs: EcsEngine<Entity> };
 
 export default class Game {
+    private _levelData: TiledMap;
     private _level: LevelContainer;
     private _engines: Engines;
     private _systems: Array<System>;
 
-    constructor(level: LevelContainer) {
+    constructor(levelData: TiledMap, level: LevelContainer) {
+        this._levelData = levelData;
         this._level = level;
         this._engines = { physics: createPhysicsEngine(), ecs: createEcsEngine() };
-        this._systems = createSystems(level, this._engines);
+        this._systems = createSystems(this._level, this._engines);
     }
 
     public init() {
         this._systems.forEach((system) => system.init?.());
 
-        initEntities(this._level, this._engines.ecs);
+        initEntities(this._levelData, this._level, this._engines.ecs);
         Runner.run(this._engines.physics);
     }
 

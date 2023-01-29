@@ -9,7 +9,6 @@ export default function parseMap(tiledMap: TiledMap): TiledMapContainer {
     const worldHeight = tiledMap.height * tiledMap.tileheight;
 
     world.name = "World";
-    world.tiled = tiledMap;
     world.staticBounds = new Rectangle(0, 0, worldWidth, worldHeight);
     world.layers = [];
     world.layerNameToContainerMap = new Map();
@@ -91,12 +90,23 @@ function parsePolygon(tiledObject: PartiallyRequired<TiledObject, "polygon">): G
 
 function parsePolyline(tiledObject: PartiallyRequired<TiledObject, "polyline">): Graphics {
     const polyline = new Graphics().lineStyle(3, 0xffffff);
+    const left = Math.min(...tiledObject.polyline.map((point) => point.x));
+    const right = Math.max(...tiledObject.polyline.map((point) => point.x));
+    const top = Math.min(...tiledObject.polyline.map((point) => point.y));
+    const bottom = Math.max(...tiledObject.polyline.map((point) => point.y));
+    const width = right - left;
+    const height = bottom - top;
 
     tiledObject.polyline.forEach((point, i) =>
-        i === 0 ? polyline.moveTo(point.x, point.y) : polyline.lineTo(point.x, point.y),
+        i === 0
+            ? polyline.moveTo(point.x - width * 0.5, point.y - height * 0.5)
+            : polyline.lineTo(point.x - width * 0.5, point.y - height * 0.5),
     );
 
-    return copyProperties(polyline, tiledObject);
+    copyProperties(polyline, tiledObject);
+    polyline.position.set(polyline.x + width * 0.5, polyline.y + height * 0.5);
+
+    return polyline;
 }
 
 function parseRect(tiledObject: TiledObject): Graphics {
