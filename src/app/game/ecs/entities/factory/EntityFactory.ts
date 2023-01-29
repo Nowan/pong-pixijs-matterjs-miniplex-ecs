@@ -1,6 +1,15 @@
 import { RegisteredEntity, World as EcsEngine } from "miniplex";
 import { LevelContainer } from "../../../parseLevel";
-import { Entity, BallEntity, LevelBorderEntity, PaddleEntity, DeadzoneEntity } from "../Entity";
+import Player from "../../../Player";
+import {
+    Entity,
+    BallEntity,
+    LevelBorderEntity,
+    PaddleEntity,
+    DeadzoneEntity,
+    MatchEntity,
+    RoundEntity,
+} from "../Entity";
 import {
     composeLeftPaddleEntity,
     composeRightPaddleEntity,
@@ -9,6 +18,8 @@ import {
     composeLeftDeadzoneEntity,
     composeRightDeadzoneEntity,
     composeBallEntity,
+    composeMatchEntity,
+    composeRoundEntity,
 } from "./composers";
 
 export class EntityFactory {
@@ -18,6 +29,14 @@ export class EntityFactory {
     constructor(ecs: EcsEngine<Entity>, level: LevelContainer) {
         this._ecs = ecs;
         this._level = level;
+    }
+
+    public createMatchEntity(id: string, numberOfPointsToWin?: number): RegisteredEntity<MatchEntity> {
+        return this._register(composeMatchEntity(id, numberOfPointsToWin));
+    }
+
+    public createRoundEntity(matchId: string, servingPlayer: Player): RegisteredEntity<RoundEntity> {
+        return this._register(composeRoundEntity(matchId, servingPlayer));
     }
 
     public createLeftPaddleEntity(): RegisteredEntity<PaddleEntity> {

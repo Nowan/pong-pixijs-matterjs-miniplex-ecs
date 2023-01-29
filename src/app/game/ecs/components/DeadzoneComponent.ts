@@ -1,5 +1,10 @@
+import Player from "../../Player";
+
 export interface DeadzoneComponent {
-    deadzone: boolean;
+    deadzone: {
+        triggered: boolean;
+        keeper: Player;
+    };
 }
 
 export default DeadzoneComponent;

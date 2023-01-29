@@ -1,24 +1,28 @@
 import { Bodies } from "matter-js";
 import { Graphics } from "pixi.js";
 import { LevelContainer } from "../../../../parseLevel";
+import Player from "../../../../Player";
 import { DeadzoneEntity } from "../../Entity";
 
 export function composeLeftDeadzoneEntity(level: LevelContainer): ReturnType<typeof composeDeadzoneEntity> {
-    return composeDeadzoneEntity("DEADZONE_LEFT", level.deadzones.left);
+    return composeDeadzoneEntity("DEADZONE_LEFT", level.deadzones.left, Player.ONE);
 }
 
 export function composeRightDeadzoneEntity(level: LevelContainer): ReturnType<typeof composeDeadzoneEntity> {
-    return composeDeadzoneEntity("DEADZONE_LEFT", level.deadzones.right);
+    return composeDeadzoneEntity("DEADZONE_LEFT", level.deadzones.right, Player.TWO);
 }
 
-export function composeDeadzoneEntity(id: string, graphics: Graphics): DeadzoneEntity {
+export function composeDeadzoneEntity(id: string, graphics: Graphics, keeper: Player): DeadzoneEntity {
     return {
         id,
         physics: Bodies.rectangle(graphics.x, graphics.y, graphics.width, graphics.height, {
             isStatic: true,
             isSensor: true,
         }),
-        deadzone: true,
+        deadzone: {
+            keeper,
+            triggered: false,
+        },
     };
 }
 

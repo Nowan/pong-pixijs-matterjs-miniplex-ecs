@@ -6,8 +6,10 @@ import {
     System,
     PhysicsSystem,
     KeyMoveSystem,
-    BallSpawnSystem,
+    MatchSystem,
+    RoundSystem,
     DeadzoneCollisionSystem,
+    PixiSystem,
 } from "./ecs";
 import { LevelContainer } from "./parseLevel";
 import TiledMap from "tiled-types/types";
@@ -37,6 +39,7 @@ export default class Game {
 
     public update(timeSinceLastFrameInS: number) {
         this._systems.forEach((system) => system.update?.(timeSinceLastFrameInS));
+        this._engines.ecs.queue.flush();
     }
 
     private _initSystems(): void {
@@ -52,6 +55,8 @@ export default class Game {
 
         this._entityFactory.createLeftDeadzoneEntity();
         this._entityFactory.createRightDeadzoneEntity();
+
+        this._entityFactory.createMatchEntity("Match");
     }
 
     private _initPhysics(): void {
@@ -71,8 +76,10 @@ function createSystems(level: LevelContainer, { ecs, physics }: Engines, entityF
     return [
         new PhysicsSystem(ecs, physics),
         new KeyMoveSystem(ecs),
-        new DeadzoneCollisionSystem(ecs, physics),
-        new BallSpawnSystem(ecs, level, entityFactory),
+        new MatchSystem(ecs, entityFactory, level),
+        new RoundSystem(ecs, entityFactory, level),
+        new DeadzoneCollisionSystem(ecs),
+        new PixiSystem(ecs, level),
     ];
 }
 

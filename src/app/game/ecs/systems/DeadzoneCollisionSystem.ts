@@ -1,23 +1,21 @@
 import System from "./System";
-import { DeadzoneEntity, Entity } from "../entities";
-import { Engine as PhysicsEngine, Detector, Collision } from "matter-js";
+import { BallEntity, DeadzoneEntity, Entity } from "../entities";
+import { Detector, Collision } from "matter-js";
 import { World as EcsEngine, Archetype } from "miniplex";
 
 export class DeadzoneCollisionSystem extends System {
-    private _physics: PhysicsEngine;
     private _archetypes: {
-        ball: Archetype<Entity>;
-        deadzone: Archetype<Entity>;
+        ball: Archetype<BallEntity>;
+        deadzone: Archetype<DeadzoneEntity>;
     };
     private _detectors: Array<Detector>;
 
-    constructor(ecs: EcsEngine<Entity>, physics: PhysicsEngine) {
+    constructor(ecs: EcsEngine<Entity>) {
         super(ecs);
 
-        this._physics = physics;
         this._archetypes = {
-            ball: ecs.archetype("ball") as Archetype<Entity>,
-            deadzone: ecs.archetype("deadzone") as Archetype<Entity>,
+            ball: ecs.archetype("ball") as Archetype<BallEntity>,
+            deadzone: ecs.archetype("deadzone") as Archetype<DeadzoneEntity>,
         };
         this._detectors = [];
     }
@@ -41,23 +39,30 @@ export class DeadzoneCollisionSystem extends System {
         });
     }
 
-    update(dt: number) {
+    update() {
+        this._archetypes.deadzone.entities.forEach(({ deadzone }) => (deadzone.triggered = false));
+
         for (let detector of this._detectors) {
             const [collision] = Detector.collisions(detector);
 
             if (collision) {
-                const deadzoneEntity = this._lookupCollidingDeadzoneEntity(collision);
-                // TODO: do something with collision
-                console.log(deadzoneEntity);
+                const deadzoneEntity = lookupCollidingEntity(this._archetypes.deadzone.entities, collision);
+                const ballEntity = lookupCollidingEntity(this._archetypes.ball.entities, collision);
+
+                if (deadzoneEntity) deadzoneEntity.deadzone.triggered = true;
+                if (ballEntity) this.ecs.queue.destroyEntity(ballEntity);
             }
         }
     }
+}
 
-    _lookupCollidingDeadzoneEntity(collision: Collision): DeadzoneEntity | undefined {
-        return this._archetypes.deadzone.entities.find(({ physics: entityBody }) =>
-            [collision.bodyA, collision.bodyB].some((collisionBody) => collisionBody === entityBody),
-        );
-    }
+function lookupCollidingEntity<ENTITY extends BallEntity | DeadzoneEntity>(
+    entities: Array<ENTITY>,
+    collision: Collision,
+): ENTITY | undefined {
+    return entities.find(({ physics: entityBody }) =>
+        [collision.bodyA, collision.bodyB].some((collisionBody) => collisionBody === entityBody),
+    );
 }
 
 export default DeadzoneCollisionSystem;
