@@ -2,7 +2,7 @@ import System from "./System";
 import { World as EcsEngine, Archetype, RegisteredEntity } from "miniplex";
 import { Entity, EntityFactory, MatchEntity, RoundEntity } from "../entities";
 import { Event } from "../../core/Event";
-import Player from "../../core/Player";
+import Player, { opposite } from "../../core/Player";
 import { utils } from "pixi.js";
 
 export class MatchSystem extends System {
@@ -25,6 +25,7 @@ export class MatchSystem extends System {
     init() {
         this._archetype.onEntityRemoved.add(({ round }) => {
             this.entity.match.score[round.wonByPlayer!] += 1;
+            this.entity.match.nextServeByPlayer = opposite(round.servedByPlayer);
 
             this._eventBus.emit(Event.ROUND_END);
         });
@@ -35,9 +36,7 @@ export class MatchSystem extends System {
             if (checkPlayerWin(this.entity)) {
                 this._eventBus.emit(Event.MATCH_END);
             } else {
-                const firstPlayerToServe = Math.random() < 0.5 ? Player.ONE : Player.TWO;
-
-                this._entityFactory.createRoundEntity(firstPlayerToServe);
+                this._entityFactory.createRoundEntity(pickNextPlayerToServe(this.entity));
                 this._eventBus.emit(Event.ROUND_START);
             }
         }
@@ -51,6 +50,14 @@ function checkPlayerWin({ match }: MatchEntity): boolean {
     const pointsDifference = leadingPoints - followingPoints;
 
     return leadingPoints >= match.numberOfPointsToWin && pointsDifference >= 2;
+}
+
+function pickNextPlayerToServe({ match }: MatchEntity): Player {
+    return match.nextServeByPlayer || pickPlayerForFirstServe();
+}
+
+function pickPlayerForFirstServe(): Player {
+    return Math.random() < 0.5 ? Player.ONE : Player.TWO;
 }
 
 export default MatchSystem;
