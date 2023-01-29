@@ -1,9 +1,9 @@
 import System from "./System";
 import { World as EcsEngine, Archetype } from "miniplex";
-import { Bodies, Body, Vector } from "matter-js";
-import { Entity, BallEntity, EntityFactory } from "../entities";
+import { Body, Vector } from "matter-js";
+import { Entity, EntityFactory } from "../entities";
 import { LevelContainer } from "../../parseLevel";
-import { IPointData, Graphics } from "pixi.js";
+import { IPointData } from "pixi.js";
 
 export class BallSpawnSystem extends System {
     private _ecs: EcsEngine<Entity>;

@@ -1,5 +1,5 @@
 import System from "./System";
-import Entity from "../entities";
+import { Entity } from "../entities";
 import { Listener as KeypressListener } from "keypress.js";
 import { Body } from "matter-js";
 import { World as EcsEngine, Archetype } from "miniplex";
@@ -31,13 +31,11 @@ export class KeyMoveSystem extends System {
     }
 
     public update(dt: number) {
-        for (let entity of this._archetype.entities) {
-            const body = entity.physics;
+        for (let { physics: body } of this._archetype.entities) {
             Body.setPosition(body, {
                 x: body.position.x + body.velocity.x,
                 y: body.position.y + body.velocity.y,
             });
-            // console.log(entity.physics.velocity);
         }
     }
 }

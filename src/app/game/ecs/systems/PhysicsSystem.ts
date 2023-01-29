@@ -1,5 +1,5 @@
 import System from "./System";
-import Entity from "../entities";
+import { Entity } from "../entities";
 import { World as EcsEngine, Archetype } from "miniplex";
 import { Engine as PhysicsEngine, World } from "matter-js";
 
