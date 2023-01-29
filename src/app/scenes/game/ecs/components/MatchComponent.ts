@@ -1,4 +1,4 @@
-import Player from "../../Player";
+import Player from "../../core/Player";
 
 export type MatchScore = Record<Player, number>;
 

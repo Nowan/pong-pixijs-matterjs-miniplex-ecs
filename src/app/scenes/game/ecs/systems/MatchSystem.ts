@@ -1,8 +1,8 @@
 import System from "./System";
 import { World as EcsEngine, Archetype, RegisteredEntity } from "miniplex";
 import { Entity, EntityFactory, MatchEntity, RoundEntity } from "../entities";
-import { Event } from "../../Event";
-import Player from "../../Player";
+import { Event } from "../../core/Event";
+import Player from "../../core/Player";
 import { utils } from "pixi.js";
 
 export class MatchSystem extends System {

@@ -1,4 +1,4 @@
-import Player from "../../../../Player";
+import Player from "../../../../core/Player";
 import { RoundEntity } from "../../Entity";
 
 export function composeRoundEntity(servingPlayer: Player): RoundEntity {

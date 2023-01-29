@@ -1,4 +1,4 @@
-import Player from "../../../../Player";
+import Player from "../../../../core/Player";
 import { MatchEntity } from "../../Entity";
 
 const DEFAULT_NUMBER_OF_POINTS_TO_WIN = 11;

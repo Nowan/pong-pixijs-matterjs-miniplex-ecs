@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
 import { Assets } from "@pixi/assets";
 import SceneDirector from "./core/sceneManagement/SceneDirector";
-import GameScene from "./scenes/GameScene";
+import GameScene from "./scenes/game/GameScene";
 
 export default class App extends Application {
     public director: SceneDirector;

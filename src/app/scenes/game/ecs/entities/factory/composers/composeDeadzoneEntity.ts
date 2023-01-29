@@ -1,7 +1,7 @@
 import { Bodies } from "matter-js";
 import { Graphics } from "pixi.js";
 import { LevelContainer } from "../../../../utils/parseLevel";
-import Player from "../../../../Player";
+import Player from "../../../../core/Player";
 import { DeadzoneEntity } from "../../Entity";
 
 export function composeLeftDeadzoneEntity(level: LevelContainer): ReturnType<typeof composeDeadzoneEntity> {
