@@ -38,8 +38,8 @@ export default class Game {
     }
 
     public update(timeSinceLastFrameInS: number) {
-        this._systems.forEach((system) => system.update?.(timeSinceLastFrameInS));
         this._engines.ecs.queue.flush();
+        this._systems.forEach((system) => system.update?.(timeSinceLastFrameInS));
     }
 
     private _initSystems(): void {
@@ -74,10 +74,10 @@ function createEcsEngine(): EcsEngine<Entity> {
 
 function createSystems(level: LevelContainer, { ecs, physics }: Engines, entityFactory: EntityFactory): Array<System> {
     return [
-        new PhysicsSystem(ecs, physics),
-        new KeyMoveSystem(ecs),
         new MatchSystem(ecs, entityFactory, level),
         new RoundSystem(ecs, entityFactory, level),
+        new PhysicsSystem(ecs, physics),
+        new KeyMoveSystem(ecs),
         new DeadzoneCollisionSystem(ecs),
         new PixiSystem(ecs, level),
     ];
