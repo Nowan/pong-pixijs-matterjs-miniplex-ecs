@@ -28,6 +28,7 @@
     "author": "Mykyta Dniprovskyi",
     "dependencies": {
         "@pixi/assets": "^6.5.9",
+        "animejs": "^3.2.1",
         "core-js": "^3.26.0",
         "keypress.js": "^2.1.5",
         "matter-js": "^0.18.0",
@@ -40,6 +41,7 @@
     },
     "devDependencies": {
         "@swc/core": "^1.3.11",
+        "@types/animejs": "^3.1.7",
         "@types/jest": "^29.2.0",
         "@types/keypress.js": "^2.1.1",
         "@types/matter-js": "^0.18.2",

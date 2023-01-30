@@ -1,5 +1,5 @@
 import { RegisteredEntity, World as EcsEngine } from "miniplex";
-import { LevelContainer } from "../../../utils/parseLevel";
+import { LevelContainer } from "../../../core/parseLevel";
 import Player from "../../../core/Player";
 import {
     Entity,

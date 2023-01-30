@@ -1,7 +1,7 @@
 import { Body, Vector } from "matter-js";
 import { World as EcsEngine, Archetype, RegisteredEntity } from "miniplex";
 import { IPointData } from "pixi.js";
-import { LevelContainer } from "../../utils/parseLevel";
+import { LevelContainer } from "../../core/parseLevel";
 import Player, { opposite } from "../../core/Player";
 import { DeadzoneEntity, Entity, EntityFactory, RoundEntity } from "../entities";
 import System from "./System";

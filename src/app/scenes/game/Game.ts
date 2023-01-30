@@ -14,7 +14,7 @@ import {
     PixiSystem,
     MatchScore,
 } from "./ecs";
-import parseLevel, { LevelContainer } from "./utils/parseLevel";
+import parseLevel, { LevelContainer } from "./core/parseLevel";
 
 type Engines = { physics: PhysicsEngine; ecs: EcsEngine<Entity> };
 

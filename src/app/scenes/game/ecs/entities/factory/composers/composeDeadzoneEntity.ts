@@ -1,6 +1,6 @@
 import { Bodies } from "matter-js";
 import { Graphics } from "pixi.js";
-import { LevelContainer } from "../../../../utils/parseLevel";
+import { LevelContainer } from "../../../../core/parseLevel";
 import Player from "../../../../core/Player";
 import { DeadzoneEntity } from "../../Entity";
 

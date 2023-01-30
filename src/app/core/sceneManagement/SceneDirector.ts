@@ -1,4 +1,4 @@
-import { utils, Container, AbstractRenderer } from "pixi.js";
+import { utils } from "pixi.js";
 import App from "../../App";
 import Scene from "./Scene";
 
