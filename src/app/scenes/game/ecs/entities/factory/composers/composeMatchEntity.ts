@@ -9,8 +9,8 @@ export function composeMatchEntity(numberOfPointsToWin?: number): MatchEntity {
         match: {
             numberOfPointsToWin: numberOfPointsToWin || DEFAULT_NUMBER_OF_POINTS_TO_WIN,
             score: {
-                [Player.ONE]: 0,
-                [Player.TWO]: 0,
+                [Player.ONE]: 10,
+                [Player.TWO]: 8,
             },
             nextServeByPlayer: null,
         },

@@ -1,4 +1,4 @@
-import { Engine as PhysicsEngine, Runner } from "matter-js";
+import { Engine as PhysicsEngine, World as PhysicsWorld, Runner as PhysicsRunner } from "matter-js";
 import { World as EcsEngine } from "miniplex";
 import { utils } from "pixi.js";
 import TiledMap from "tiled-types/types";
@@ -26,7 +26,7 @@ export default class Game {
     private _entityFactory: EntityFactory;
     private _systems: Array<System>;
     private _matchSystem: MatchSystem;
-    private _physicsRunner: Runner | null = null;
+    private _physicsRunner: PhysicsRunner | null = null;
 
     constructor(levelData: TiledMap) {
         this.events = new utils.EventEmitter();
@@ -63,6 +63,13 @@ export default class Game {
         if (this._physicsRunner) this._physicsRunner.enabled = true;
     }
 
+    public stop(): void {
+        if (this._physicsRunner) PhysicsRunner.stop(this._physicsRunner);
+        PhysicsWorld.clear(this._engines.physics.world, false);
+        PhysicsEngine.clear(this._engines.physics);
+        this._engines.ecs.clear();
+    }
+
     private _initSystems(): void {
         this._systems.forEach((system) => system.init?.());
     }
@@ -79,7 +86,7 @@ export default class Game {
     }
 
     private _initPhysics(): void {
-        this._physicsRunner = Runner.run(this._engines.physics);
+        this._physicsRunner = PhysicsRunner.run(this._engines.physics);
     }
 }
 

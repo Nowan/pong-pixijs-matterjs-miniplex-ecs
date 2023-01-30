@@ -6,10 +6,13 @@ import Game, { GameEvent } from "./Game";
 import GuiUnderlay from "./gui/underlay/GuiUnderlay";
 import GuiOverlay from "./gui/overlay/GuiOverlay";
 import GuiEvent from "./events/GuiEvent";
+import SummaryScene from "../summary/SummaryScene";
 
 const LEVEL_DATA_PATH = "assets/levels/main.tiled.json";
 
 export default class GameScene extends Scene {
+    public static readonly NAME = "Game";
+
     private _game: Game | null;
     private _gui: {
         underlay: GuiUnderlay | null;
@@ -63,6 +66,10 @@ export default class GameScene extends Scene {
         this._game?.update(timeSinceLastFrameInS);
     }
 
+    public destroy() {
+        this._game?.stop();
+    }
+
     private _createViewport(): Viewport {
         return this.addChild(
             new Viewport({
@@ -77,9 +84,8 @@ export default class GameScene extends Scene {
     private _createGame(levelData: TiledMap): Game {
         const game = new Game(levelData);
 
-        game.events.on(GameEvent.ROUND_START, () => console.log(GameEvent.ROUND_START));
         game.events.on(GameEvent.ROUND_END, () => this._gui.underlay?.updateScore(game.score));
-        game.events.on(GameEvent.MATCH_END, () => console.log(GameEvent.MATCH_END));
+        game.events.on(GameEvent.MATCH_END, () => this.director.goTo(SummaryScene.NAME, game.score));
 
         return game;
     }
