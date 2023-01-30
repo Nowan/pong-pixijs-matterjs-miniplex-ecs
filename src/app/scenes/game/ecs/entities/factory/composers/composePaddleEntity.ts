@@ -3,6 +3,8 @@ import { Graphics } from "pixi.js";
 import { MoveDirection, MoveKey, MoveOnKeysComponent } from "../../../components";
 import { PaddleEntity } from "../../Entity";
 
+import physicsConfig from "../../../../../../config/physics.config";
+
 export function composeLeftPaddleEntity(graphics: Graphics): ReturnType<typeof composePaddleEntity> {
     return composePaddleEntity("PADDLE_LEFT", graphics, {
         [MoveKey.W]: MoveDirection.UP,
@@ -26,7 +28,10 @@ export function composePaddleEntity(
         id,
         moveOnKeys,
         pixi: graphics,
-        physics: Bodies.rectangle(graphics.x, graphics.y, graphics.width, graphics.height, { isStatic: true }),
+        physics: Bodies.rectangle(graphics.x, graphics.y, graphics.width, graphics.height, {
+            ...physicsConfig,
+            isStatic: true,
+        }),
     };
 }
 

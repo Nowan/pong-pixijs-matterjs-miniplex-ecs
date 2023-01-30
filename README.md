@@ -1,7 +1,6 @@
-# Webpack-pixi-typescirpt-starter
+# Pong
 
-Project based on a template, with minor alterations
-https://github.com/yordan-kanchelov/pixi-typescript-boilerplate
+A classic game of Pong written with experimental hybrid ECS approach.
 
 ## Commands:
 

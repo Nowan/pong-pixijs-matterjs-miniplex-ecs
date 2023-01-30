@@ -1,6 +1,6 @@
 import { Body, Vector } from "matter-js";
 import { World as EcsEngine, Archetype, RegisteredEntity } from "miniplex";
-import { IPointData } from "pixi.js";
+import { DEG_TO_RAD, IPointData } from "pixi.js";
 import { LevelContainer } from "../../core/parseLevel";
 import Player, { opposite } from "../../core/Player";
 import { DeadzoneEntity, Entity, EntityFactory, RoundEntity } from "../entities";
@@ -80,9 +80,12 @@ export class RoundSystem extends System {
 }
 
 function pickInitialVelocity(servingPlayer: Player): Vector {
-    const directionMultiplier = servingPlayer === Player.ONE ? 1 : -1;
-    return { x: 10, y: 10 };
-    // return { x: 10 * directionMultiplier, y: Math.random() * 4 - 2 };
+    const serveArc = servingPlayer === Player.ONE ? 0 : Math.PI;
+    const spreadArc = 20 * DEG_TO_RAD;
+    const velocity = 10;
+    const angle = Math.random() * spreadArc - spreadArc * 0.5 + serveArc;
+
+    return { x: velocity * Math.cos(angle), y: velocity * Math.sin(angle) };
 }
 
 function pickRandomPointOnLine(pointA: IPointData, pointB: IPointData): IPointData {
