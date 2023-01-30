@@ -13,6 +13,7 @@ import {
     DeadzoneCollisionSystem,
     PixiSystem,
     MatchScore,
+    BallRebounceSystem,
 } from "./ecs";
 import parseLevel, { LevelContainer } from "./core/parseLevel";
 
@@ -114,6 +115,7 @@ function createSystems(
         new MatchSystem(ecs, entityFactory, eventBus),
         new RoundSystem(ecs, entityFactory, level),
         new DeadzoneCollisionSystem(ecs),
+        new BallRebounceSystem(ecs),
         new PixiSystem(ecs, level),
     ];
 }

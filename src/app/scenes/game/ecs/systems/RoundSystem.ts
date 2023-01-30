@@ -43,14 +43,14 @@ export class RoundSystem extends System {
         this._attemptEndRound();
     }
 
-    private _attemptStartRound() {
+    private _attemptStartRound(): void {
         if (this._entity && !this._entity.round.started) {
             this._entity.round.started = true;
             this._spawnBallAndServe(this._entity.round.servedByPlayer);
         }
     }
 
-    private _attemptEndRound() {
+    private _attemptEndRound(): void {
         if (this._entity) {
             const triggeredDeadzoneKeeer = this._checkTriggeredDeadzones();
 
@@ -81,7 +81,8 @@ export class RoundSystem extends System {
 
 function pickInitialVelocity(servingPlayer: Player): Vector {
     const directionMultiplier = servingPlayer === Player.ONE ? 1 : -1;
-    return { x: 10 * directionMultiplier, y: Math.random() * 4 - 2 };
+    return { x: 10, y: 10 };
+    // return { x: 10 * directionMultiplier, y: Math.random() * 4 - 2 };
 }
 
 function pickRandomPointOnLine(pointA: IPointData, pointB: IPointData): IPointData {
