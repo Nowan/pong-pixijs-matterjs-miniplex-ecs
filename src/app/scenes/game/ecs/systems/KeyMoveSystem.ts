@@ -3,6 +3,7 @@ import { Entity } from "../entities";
 import { Listener as KeypressListener } from "keypress.js";
 import { Body } from "matter-js";
 import { World as EcsEngine, Archetype } from "miniplex";
+import { clamp } from "../../../../core/utils/math";
 
 export class KeyMoveSystem extends System {
     private _archetype: Archetype<Entity>;
@@ -34,7 +35,7 @@ export class KeyMoveSystem extends System {
         for (let { physics: body } of this._archetype.entities) {
             Body.setPosition(body, {
                 x: body.position.x + body.velocity.x,
-                y: body.position.y + body.velocity.y,
+                y: clamp(body.position.y + body.velocity.y, 75, 555),
             });
         }
     }
