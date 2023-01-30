@@ -3,6 +3,8 @@ import { Graphics } from "pixi.js";
 import { LevelContainer, LineData } from "../../../../core/parseLevel";
 import { LevelBorderEntity } from "../../Entity";
 
+import physicsConfig from "../../../../../../config/physics.config";
+
 export function composeUpperBorderEntity(level: LevelContainer): ReturnType<typeof composeBorderEntity> {
     return composeBorderEntity("BORDER_UPPER", level.borderUpper, level.borderLines.upper);
 }
@@ -16,17 +18,15 @@ export function composeBorderEntity(id: string, graphics: Graphics, [pointA, poi
     const dY = pointB.y - pointA.y;
     const dH = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
     const angle = Math.atan2(dY, dX);
-    const thickness = 5;
+    const thickness = 10;
 
     return {
         id,
         pixi: graphics,
         physics: Bodies.rectangle(pointA.x + dX * 0.5, pointA.y + dY * 0.5, dH, thickness, {
-            isStatic: true,
-            friction: 0,
-            frictionStatic: 0,
-            restitution: 1,
+            ...physicsConfig.borders,
             angle,
+            isStatic: true,
         }),
     };
 }
