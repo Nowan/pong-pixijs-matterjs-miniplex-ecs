@@ -85,7 +85,8 @@ function pickInitialVelocity(servingPlayer: Player): Vector {
     const velocity = 10;
     const angle = Math.random() * spreadArc - spreadArc * 0.5 + serveArc;
 
-    return { x: velocity * Math.cos(angle), y: velocity * Math.sin(angle) };
+    // return { x: velocity * Math.cos(angle), y: velocity * Math.sin(angle) };
+    return { x: 12, y: 20 };
 }
 
 function pickRandomPointOnLine(pointA: IPointData, pointB: IPointData): IPointData {

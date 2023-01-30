@@ -1,7 +1,9 @@
 import System from "./System";
 import { BallEntity, Entity, PhysicsEntity } from "../entities";
-import { Body, Detector } from "matter-js";
+import { Body, Detector, Vector } from "matter-js";
 import { World as EcsEngine, Archetype } from "miniplex";
+
+const { normalise, sub, mult, dot } = Vector;
 
 export class BallRebounceSystem extends System {
     private _archetypes: {
@@ -54,9 +56,12 @@ export class BallRebounceSystem extends System {
             const [collision] = Detector.collisions(detector);
 
             if (collision) {
-                const { bodyA: border, bodyB: ball } = collision;
+                const { bodyA: border, bodyB: ball, normal: n } = collision;
+                const d = normalise(ball.velocity);
+                d.y *= -1;
+                const r = sub(d, mult(n, 2 * dot(d, n)));
 
-                Body.setVelocity(ball, { x: 0, y: 0 });
+                Body.setVelocity(ball, mult(r, 10));
                 Body.setAngularVelocity(ball, 0);
             }
         }
