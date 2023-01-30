@@ -34,12 +34,6 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
         if (Scene) {
             const scene = new Scene({ director: this, renderer: this._app.renderer });
 
-            if (this._activeScene) {
-                this._activeScene.ticker.stop();
-                this._activeScene.destroy();
-                this._app.stage.removeChild(this._activeScene);
-            }
-
             scene.load().then(() => {
                 scene.init(...args);
                 this._resizeScene(scene);
@@ -55,10 +49,16 @@ export default class SceneDirector extends utils.EventEmitter<Event> {
 
                     scene.ticker.start();
                 }
-            });
 
-            this._app.stage.addChild(scene);
-            this._activeScene = scene;
+                if (this._activeScene) {
+                    this._activeScene.ticker.stop();
+                    this._activeScene.destroy();
+                    this._app.stage.removeChild(this._activeScene);
+                }
+
+                this._app.stage.addChild(scene);
+                this._activeScene = scene;
+            });
         } else {
             console.error(`Scene alias "${alias}" is not registered.`);
         }
