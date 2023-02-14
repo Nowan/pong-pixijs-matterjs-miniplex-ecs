@@ -29,7 +29,7 @@
     "dependencies": {
         "@pixi/assets": "^6.5.9",
         "animejs": "^3.2.1",
-        "core-js": "^3.26.0",
+        "core-js": "^3.28.0",
         "keypress.js": "^2.1.5",
         "matter-js": "^0.18.0",
         "miniplex": "^1.0.0",
